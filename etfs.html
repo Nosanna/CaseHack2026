@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="assets/mockup.css" rel="stylesheet">
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -71,7 +73,7 @@
   button, a { transition: all 0.2s ease; }
 </style>
 </head>
-<body class="bg-background text-on-background min-h-screen font-body-md with-mockup">
+<body class="bg-background text-on-background min-h-screen font-body-md with-mockup" x-data="{ selectedEtfs: [] }">
 <div class="iphone-x">
   <div class="side-button power-button"></div>
   <div class="side-button volume-buttons volume-up"></div>
@@ -110,13 +112,18 @@
       <!-- ETF Cards -->
       <div class="space-y-6">
         <!-- VFV -->
-        <div class="etf-card bg-white rounded-xl p-6 card-shadow border border-surface-container-high relative cursor-pointer" onclick="location.href='etf-detail.html'">
+        <div class="etf-card bg-white rounded-xl p-6 card-shadow border relative cursor-pointer group"
+             :class="selectedEtfs.includes('VFV') ? 'border-primary bg-primary/5' : 'border-surface-container-high'"
+             @click="selectedEtfs.includes('VFV') ? selectedEtfs = selectedEtfs.filter(e => e !== 'VFV') : (selectedEtfs.length < 3 ? selectedEtfs.push('VFV') : alert('Max 3 for comparison'))">
+          <div class="absolute top-4 right-4" x-show="selectedEtfs.includes('VFV')">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
           <div class="flex justify-between items-start mb-4">
             <div class="flex flex-col">
               <span class="font-label-sm text-secondary uppercase tracking-wider mb-1">VFV</span>
               <h3 class="font-headline-md text-headline-md text-on-background leading-tight">Vanguard S&amp;P 500 Index ETF</h3>
             </div>
-            <div class="bg-surface-container px-3 py-1 rounded-full">
+            <div class="bg-surface-container px-3 py-1 rounded-full" x-show="!selectedEtfs.includes('VFV')">
               <span class="font-label-sm text-on-secondary-container">Low fee</span>
             </div>
           </div>
@@ -126,20 +133,25 @@
             <div class="flex flex-col"><span class="font-label-sm text-secondary">MER</span><span class="font-body-md font-semibold text-on-background">0.09%</span></div>
             <div class="flex flex-col"><span class="font-label-sm text-secondary">Est. Yield</span><span class="font-body-md font-semibold text-on-background">1.32%</span></div>
           </div>
-          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between">
+          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between" @click.stop="location.href='etf-detail.html'">
             <span class="font-label-md text-primary">View performance trends</span>
             <span class="material-symbols-outlined text-primary">arrow_forward_ios</span>
           </div>
         </div>
     
         <!-- XBAL -->
-        <div class="etf-card bg-white rounded-xl p-6 card-shadow border border-surface-container-high relative cursor-pointer" onclick="location.href='etf-detail.html'">
+        <div class="etf-card bg-white rounded-xl p-6 card-shadow border relative cursor-pointer group"
+             :class="selectedEtfs.includes('XBAL') ? 'border-primary bg-primary/5' : 'border-surface-container-high'"
+             @click="selectedEtfs.includes('XBAL') ? selectedEtfs = selectedEtfs.filter(e => e !== 'XBAL') : (selectedEtfs.length < 3 ? selectedEtfs.push('XBAL') : alert('Max 3 for comparison'))">
+          <div class="absolute top-4 right-4" x-show="selectedEtfs.includes('XBAL')">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
           <div class="flex justify-between items-start mb-4">
             <div class="flex flex-col">
               <span class="font-label-sm text-secondary uppercase tracking-wider mb-1">XBAL</span>
               <h3 class="font-headline-md text-headline-md text-on-background leading-tight">iShares Core Balanced ETF Portfolio</h3>
             </div>
-            <div class="bg-surface-container px-3 py-1 rounded-full">
+            <div class="bg-surface-container px-3 py-1 rounded-full" x-show="!selectedEtfs.includes('XBAL')">
               <span class="font-label-sm text-on-secondary-container">Balanced</span>
             </div>
           </div>
@@ -149,20 +161,25 @@
             <div class="flex flex-col"><span class="font-label-sm text-secondary">MER</span><span class="font-body-md font-semibold text-on-background">0.20%</span></div>
             <div class="flex flex-col"><span class="font-label-sm text-secondary">Asset Class</span><span class="font-body-md font-semibold text-on-background">Multi-asset</span></div>
           </div>
-          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between">
+          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between" @click.stop="location.href='etf-detail.html'">
             <span class="font-label-md text-primary">View performance trends</span>
             <span class="material-symbols-outlined text-primary">arrow_forward_ios</span>
           </div>
         </div>
     
         <!-- ZCN -->
-        <div class="etf-card bg-white rounded-xl p-6 card-shadow border border-surface-container-high relative cursor-pointer" onclick="location.href='etf-detail.html'">
+        <div class="etf-card bg-white rounded-xl p-6 card-shadow border relative cursor-pointer group"
+             :class="selectedEtfs.includes('ZCN') ? 'border-primary bg-primary/5' : 'border-surface-container-high'"
+             @click="selectedEtfs.includes('ZCN') ? selectedEtfs = selectedEtfs.filter(e => e !== 'ZCN') : (selectedEtfs.length < 3 ? selectedEtfs.push('ZCN') : alert('Max 3 for comparison'))">
+          <div class="absolute top-4 right-4" x-show="selectedEtfs.includes('ZCN')">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
           <div class="flex justify-between items-start mb-4">
             <div class="flex flex-col">
               <span class="font-label-sm text-secondary uppercase tracking-wider mb-1">ZCN</span>
               <h3 class="font-headline-md text-headline-md text-on-background leading-tight">BMO S&amp;P/TSX Capped Composite ETF</h3>
             </div>
-            <div class="bg-surface-container px-3 py-1 rounded-full">
+            <div class="bg-surface-container px-3 py-1 rounded-full" x-show="!selectedEtfs.includes('ZCN')">
               <span class="font-label-sm text-on-secondary-container">Canadian exposure</span>
             </div>
           </div>
@@ -172,7 +189,7 @@
             <div class="flex flex-col"><span class="font-label-sm text-secondary">MER</span><span class="font-body-md font-semibold text-on-background">0.06%</span></div>
             <div class="flex flex-col"><span class="font-label-sm text-secondary">Exchange</span><span class="font-body-md font-semibold text-on-background">TSX</span></div>
           </div>
-          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between">
+          <div class="trend-btn w-full bg-surface-container rounded-lg p-3 flex items-center justify-between" @click.stop="location.href='etf-detail.html'">
             <span class="font-label-md text-primary">View performance trends</span>
             <span class="material-symbols-outlined text-primary">arrow_forward_ios</span>
           </div>
@@ -187,10 +204,10 @@
           <span class="material-symbols-outlined">home</span>
           <span class="font-label-sm text-label-sm">Home</span>
         </a>
-        <button onclick="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-surface-container-low transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="portfolio.html" class="flex flex-col items-center justify-center text-secondary hover:bg-surface-container-low transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined">account_balance_wallet</span>
           <span class="font-label-sm text-label-sm">Accounts</span>
-        </button>
+        </a>
         <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-surface-container-low transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
           <span class="font-label-sm text-label-sm">Invest</span>
@@ -199,19 +216,22 @@
           <span class="material-symbols-outlined">lightbulb</span>
           <span class="font-label-sm text-label-sm">Insights</span>
         </button>
-        <button onclick="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="profile.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined">person</span>
           <span class="font-label-sm text-label-sm">Profile</span>
-        </button>
+        </a>
       </div>
     </nav>
   </div>
   <!-- Sticky CTA inside screen -->
   <div class="absolute bottom-24 left-0 right-0 px-container-padding-mobile pointer-events-none z-50">
     <div class="max-w-3xl mx-auto pointer-events-auto">
-      <button class="w-full scotia-gradient text-on-primary py-4 rounded-xl font-headline-md text-headline-md shadow-lg hover:shadow-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2" onclick="alert('Comparison tool coming soon')">
+      <button class="w-full py-4 rounded-xl font-headline-md text-headline-md shadow-lg transition-all flex items-center justify-center gap-2"
+              :class="selectedEtfs.length > 0 ? 'scotia-gradient text-white hover:brightness-110 active:scale-[0.98]' : 'bg-gray-200 text-gray-400 cursor-not-allowed'"
+              :disabled="selectedEtfs.length === 0"
+              @click="location.href='compare.html?ids=' + selectedEtfs.join(',')">
         <span class="material-symbols-outlined">compare_arrows</span>
-        Compare options
+        <span x-text="selectedEtfs.length > 0 ? `Compare ${selectedEtfs.length} options` : 'Compare options'"></span>
       </button>
     </div>
   </div>

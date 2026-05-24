@@ -230,6 +230,15 @@
             </div>
             <p class="text-[10px] text-tertiary font-bold">5.2% Weight</p>
           </div>
+          <div class="holding-card flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-surface-container">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-white flex items-center justify-center border border-surface-container">
+                <span class="material-symbols-outlined text-secondary text-sm">shopping_cart</span>
+              </div>
+              <div><p class="text-xs font-bold">Amazon.com Inc.</p></div>
+            </div>
+            <p class="text-[10px] text-tertiary font-bold">3.8% Weight</p>
+          </div>
         </div>
       </section>
     </main>
@@ -238,18 +247,72 @@
     <div class="fixed-bottom w-full bg-white/95 backdrop-blur-sm border-t border-surface-container p-4 z-40">
       <div class="flex gap-3 items-center justify-between mb-3">
         <div>
-          <p class="text-[10px] text-tertiary uppercase tracking-wider">Price per share</p>
-          <p class="text-lg font-bold text-on-surface">$124.52 <span class="text-xs text-secondary font-normal ml-0.5">CAD</span></p>
+          <p class="text-[10px] text-tertiary uppercase tracking-wider">Live Price (CAD)</p>
+          <div class="flex items-center gap-2">
+            <p class="text-xl font-extrabold text-on-surface" id="live-price">$124.52</p>
+            <span class="text-[10px] text-green-600 font-bold flex items-center bg-green-50 px-1.5 py-0.5 rounded" id="price-change">
+              <span class="material-symbols-outlined text-[12px]">arrow_drop_up</span>
+              0.12%
+            </span>
+          </div>
         </div>
       </div>
       <div class="flex gap-3">
-        <button class="flex-1 py-3 border border-primary text-primary rounded-md text-xs font-bold hover:bg-primary/5 active:scale-95 transition-all" onclick="alert('Added to comparison')">Compare</button>
-        <button class="flex-1 py-3 bg-primary text-white rounded-md text-xs font-bold hover:brightness-110 active:scale-95 transition-all shadow-md" onclick="location.href='portfolio.html'">Add to My Plan</button>
+        <button class="flex-1 py-3.5 border border-primary text-primary rounded-xl text-xs font-extra-bold hover:bg-primary/5 active:scale-95 transition-all" onclick="showBuyModal()">Buy Shares</button>
+        <button class="flex-1 py-3.5 bg-primary text-white rounded-xl text-xs font-extra-bold hover:brightness-110 active:scale-95 transition-all shadow-lg" onclick="location.href='confirm-add.html'">Add to Plan</button>
       </div>
     </div>
     
-    <!-- Metric Explanation Modal inside screen -->
-    <div id="metric-modal" class="absolute inset-0 bg-black/40 z-[60] hidden items-end justify-center p-4 transition-opacity">
+    <!-- Buy Modal Simulation -->
+    <div id="buy-modal" class="absolute inset-0 bg-black/60 z-[70] hidden items-end justify-center p-4">
+      <div class="bg-white rounded-2xl w-full p-6 animate-slide-up">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-bold text-xl text-on-surface">Buy VFV</h3>
+          <button onclick="hideBuyModal()" class="p-2 -mr-2"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="space-y-6">
+          <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+             <span class="text-secondary font-medium">Quantity</span>
+             <input type="number" id="buy-qty" value="1" min="1" class="w-16 bg-transparent border-none text-right font-bold text-lg focus:ring-0" oninput="updateCost()">
+          </div>
+          <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+             <span class="text-secondary font-medium">Est. Cost</span>
+             <span class="font-bold text-lg" id="est-cost">$124.52</span>
+          </div>
+          <div class="p-3 bg-blue-50 text-blue-700 text-[11px] rounded-lg border border-blue-100 italic">
+            Trades are processed through your Scotia iTRADE® account linked to your profile.
+          </div>
+          <button class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-[0.98] transition-all" onclick="confirmPurchase()">
+            Confirm Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showBuyModal() { document.getElementById('buy-modal').classList.remove('hidden'); document.getElementById('buy-modal').classList.add('flex'); }
+      function hideBuyModal() { document.getElementById('buy-modal').classList.add('hidden'); document.getElementById('buy-modal').classList.remove('flex'); }
+      function updateCost() {
+        const qty = parseInt(document.getElementById('buy-qty').value) || 0;
+        const price = parseFloat(document.getElementById('live-price').textContent.replace('$', ''));
+        document.getElementById('est-cost').textContent = '$' + (qty * price).toFixed(2);
+      }
+      function confirmPurchase() { alert('Order placed! Your portfolio will update shortly.'); hideBuyModal(); location.href='portfolio.html'; }
+      
+      // Simulate live price
+      setInterval(() => {
+        const priceEl = document.getElementById('live-price');
+        const changeEl = document.getElementById('price-change');
+        let current = parseFloat(priceEl.textContent.replace('$', ''));
+        let diff = (Math.random() - 0.5) * 0.1;
+        let next = (current + diff).toFixed(2);
+        priceEl.textContent = '$' + next;
+        
+        let pct = ((diff / current) * 100).toFixed(2);
+        changeEl.textContent = (diff >= 0 ? '+' : '') + pct + '%';
+        changeEl.className = `text-[10px] font-bold flex items-center px-1.5 py-0.5 rounded ${diff >= 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`;
+      }, 3000);
+    </script>
       <div id="metric-modal-card" class="bg-white rounded-2xl p-6 w-full shadow-2xl transform transition-all" onclick="event.stopPropagation()">
         <div class="flex items-start justify-between mb-3">
           <div>
@@ -274,10 +337,10 @@
           <span class="material-symbols-outlined text-[24px]">home</span>
           <span class="text-[10px] font-medium mt-0.5">Home</span>
         </a>
-        <button onclick="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="portfolio.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
           <span class="text-[10px] font-medium mt-0.5">Accounts</span>
-        </button>
+        </a>
         <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
           <span class="text-[10px] mt-0.5">Invest</span>
@@ -286,10 +349,10 @@
           <span class="material-symbols-outlined text-[24px]">lightbulb</span>
           <span class="text-[10px] font-medium mt-0.5">Insights</span>
         </button>
-        <button onclick="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="profile.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[24px]">person</span>
           <span class="text-[10px] font-medium mt-0.5">Profile</span>
-        </button>
+        </a>
       </div>
     </nav>
   </div>

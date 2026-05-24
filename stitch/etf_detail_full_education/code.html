@@ -1,0 +1,391 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ETF Detail - Scotia InvestSense™</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1a1c1c",
+                        "surface-tint": "#ec111a",
+                        "on-primary-fixed-variant": "#930008",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9f9",
+                        "on-error-container": "#93000a",
+                        "primary": "#ec111a",
+                        "tertiary-container": "#757474",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e4e2e2",
+                        "on-primary-fixed": "#410001",
+                        "surface-container": "#eeeeee",
+                        "inverse-surface": "#2f3131",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#636262",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fefcfc",
+                        "outline-variant": "#e9bcb6",
+                        "secondary": "#5f5e5e",
+                        "surface-container-high": "#e8e8e8",
+                        "inverse-primary": "#ffb4aa",
+                        "surface": "#f9f9f9",
+                        "surface-bright": "#f9f9f9",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed": "#e5e2e1",
+                        "outline": "#936e69",
+                        "secondary-container": "#e2dfde",
+                        "tertiary-fixed-dim": "#c7c6c6",
+                        "tertiary": "#5c5c5c",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e2e2",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-surface": "#1a1c1c",
+                        "on-surface-variant": "#5e3f3b",
+                        "primary-container": "#ec111a",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "primary-fixed": "#ffdad5",
+                        "surface-container-low": "#f3f3f3",
+                        "on-secondary-fixed": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding-mobile": "20px",
+                        "container-padding-desktop": "40px",
+                        "section-gap": "64px",
+                        "base": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "label-sm": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hold-active {
+            animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 17, 26, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236, 17, 26, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 17, 26, 0); }
+        }
+        .tooltip-enter { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .scotia-card-shadow {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-40">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky bg-surface z-40 transition-shadow duration-300" id="top-bar">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-4 w-full border-b border-surface-container">
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-100" onclick="location.href='screen_9.html'">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-[20px] font-bold text-primary">VFV Detail</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary hover:opacity-80 transition-opacity cursor-pointer">help</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-surface-container">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-6_sUEFE0DW6ziv6i8s0_IsFhAVpO8tE8iG3SQjoFOjSLGBwmcHZsGacx8gArsD1HOtlxdFuRmTU-ZjCvil3O4vIPUOyniM1QK5dzmQlzPoVYChI__hN5RZctEVgoVOgpfekAwp5_vSCrsvpHGJA-YrFA9gtNRyilAR1YzEKOzL7aNJSOlwDTftHY2gxMd6wjI8jbMJxjAq-DwuLuomZa_SIXkeh4W9Ch9rdLXB7OCBAzY0brKWCBmEgWjHahz9djnfAaSYRMRe7-">
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop mt-gutter space-y-gutter">
+<!-- Header Title Area -->
+<div class="space-y-1">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Vanguard S&amp;P 500 Index ETF</h2>
+<p class="text-label-md text-secondary">NYSE Arca: VFV</p>
+</div>
+<!-- Summary Card -->
+<section class="bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow border border-surface-container-low">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-2">
+<h3 class="font-label-md text-on-surface uppercase tracking-wide">Overview</h3>
+<p class="font-body-md text-body-md text-secondary max-w-2xl leading-relaxed">
+                    Broad exposure to major U.S. companies, low fee, medium-high risk tolerance.
+                </p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container rounded-full text-label-sm font-label-sm text-secondary">Equity</span>
+<span class="px-3 py-1 bg-surface-container rounded-full text-label-sm font-label-sm text-secondary">U.S. Large Cap</span>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Key Metrics Bento -->
+<div class="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-gutter">
+<!-- Risk Level -->
+<div class="bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow flex flex-col justify-between border border-surface-container-low"><div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">Risk level</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+</div>
+<div class="mt-4">
+<div class="flex gap-1 mb-2">
+<div class="h-2 flex-1 bg-primary rounded-full"></div>
+<div class="h-2 flex-1 bg-primary rounded-full"></div>
+<div class="h-2 flex-1 bg-primary rounded-full"></div>
+<div class="h-2 flex-1 bg-surface-container rounded-full"></div>
+<div class="h-2 flex-1 bg-surface-container rounded-full"></div>
+</div>
+<p class="font-headline-md text-[20px] text-on-surface font-bold">Medium-High</p>
+</div></div>
+<!-- MER -->
+<div class="bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low"><div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">MER</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+</div>
+<p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">0.09%</p>
+<p class="text-label-sm font-label-sm text-tertiary">Industry low fee</p></div>
+<!-- Dividend Yield -->
+<div class="bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low"><div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">Div. Yield</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+</div>
+<p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">1.2%</p>
+<p class="text-label-sm font-label-sm text-tertiary">Paid quarterly</p></div>
+<!-- 1-Year Return -->
+<div class="bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low"><div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">1-Year Return</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+</div>
+<p class="mt-4 font-headline-md text-[24px] text-primary font-bold">+18.4%</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="text-label-sm font-label-sm">Above avg.</span>
+</div></div>
+<!-- P/E Ratio -->
+<div class="relative bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow cursor-help border border-surface-container-low transition-all hover:border-primary/30" id="pe-card">
+<div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">P/E Ratio</span>
+<span class="material-symbols-outlined text-primary text-[18px] hold-active">info</span>
+</div>
+<p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">28.4</p>
+<p class="text-label-sm font-label-sm text-tertiary">Hold to explain</p>
+<!-- Tooltip -->
+<div class="hidden absolute bottom-full left-0 mb-4 w-[280px] z-50 tooltip-enter" id="pe-tooltip">
+<div class="bg-inverse-surface text-inverse-on-surface p-5 rounded-lg shadow-2xl relative">
+<h4 class="font-headline-md text-[18px] mb-2 font-bold">P/E Ratio</h4>
+<p class="font-body-md text-sm opacity-90 leading-relaxed mb-4">
+                            This compares the price of the companies in the ETF to how much they earn. Higher ratios often indicate growth expectations.
+                        </p>
+<button class="w-full py-2 bg-primary text-white rounded-md font-label-md active:scale-95 transition-transform" onclick="toggleTooltip(event)">Got it</button>
+<div class="absolute -bottom-2 left-8 w-4 h-4 bg-inverse-surface rotate-45"></div>
+</div>
+</div>
+</div>
+<!-- Fund Assets -->
+<div class="bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low"><div class="flex justify-between items-start">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider">Assets</span>
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+</div>
+<p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">$12.4B</p>
+<p class="text-label-sm font-label-sm text-tertiary">Net assets (CAD)</p></div>
+</div>
+<!-- Performance Chart -->
+<div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow flex flex-col border border-surface-container-low">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-md font-bold text-on-surface uppercase tracking-wide">Growth of $10k</h3>
+<select class="bg-transparent border-none text-label-sm text-primary font-bold focus:ring-0 cursor-pointer">
+<option>5 Years</option>
+<option>1 Year</option>
+<option>Max</option>
+</select>
+</div>
+<div class="flex-grow flex items-end gap-1.5 h-48">
+<div class="bg-primary/20 w-full h-[20%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[25%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[40%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[35%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[55%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[70%] rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-[65%] rounded-t-sm"></div>
+<div class="bg-primary w-full h-[90%] rounded-t-sm"></div>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container flex justify-between">
+<span class="text-label-sm text-tertiary">2019</span>
+<span class="text-label-sm text-on-surface font-bold">$18,420</span>
+</div>
+</div>
+</div>
+<!-- Top Holdings Section -->
+<section class="bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow border border-surface-container-low">
+<h3 class="font-headline-md text-[20px] font-bold mb-6">Top Holdings</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+<span class="material-symbols-outlined text-secondary">devices</span>
+</div>
+<div>
+<p class="font-label-md font-bold">Apple Inc.</p>
+<p class="text-label-sm text-tertiary">7.1% Weight</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+<span class="material-symbols-outlined text-secondary">computer</span>
+</div>
+<div>
+<p class="font-label-md font-bold">Microsoft Corp.</p>
+<p class="text-label-sm text-tertiary">6.9% Weight</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+<span class="material-symbols-outlined text-secondary">memory</span>
+</div>
+<div>
+<p class="font-label-md font-bold">NVIDIA Corp.</p>
+<p class="text-label-sm text-tertiary">5.2% Weight</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+<span class="material-symbols-outlined text-secondary">shopping_cart</span>
+</div>
+<div>
+<p class="font-label-md font-bold">Amazon.com Inc.</p>
+<p class="text-label-sm text-tertiary">3.8% Weight</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Fixed Action Area Above Nav -->
+<div class="fixed bottom-[72px] left-0 w-full bg-white/95 backdrop-blur-sm border-t border-surface-container p-4 z-40 md:static md:bg-transparent md:border-none md:p-6">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-3 items-center justify-between">
+<div class="hidden md:block">
+<p class="text-label-sm text-tertiary uppercase tracking-wider">Price per share</p>
+<p class="font-headline-md text-[24px] font-bold text-on-surface">$124.52 <span class="text-body-md text-secondary font-normal ml-1">CAD</span></p>
+</div>
+<div class="flex w-full md:w-auto gap-3">
+<button class="flex-1 md:px-8 py-3.5 border border-primary text-primary rounded-md font-label-md hover:bg-primary/5 transition-colors active:scale-95 duration-150" onclick="alert('Added to comparison')">
+                Compare
+            </button>
+<button class="flex-1 md:px-12 py-3.5 bg-primary text-white rounded-md font-label-md hover:opacity-90 transition-opacity shadow-md active:scale-95 duration-150" onclick="location.href='screen_29.html'">
+                Add to My Plan
+            </button>
+</div>
+</div>
+</div>
+<!-- Bottom Nav (Matching Image 6 structure) -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-surface-container md:hidden">
+<div class="flex justify-around items-center w-full pt-3 pb-safe-offset-4">
+<button class="flex flex-col items-center justify-center text-secondary py-1 w-1/4" onclick="location.href='screen_34.html'">
+<span class="material-symbols-outlined text-[26px]">home</span>
+<span class="text-[11px] font-medium mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary py-1 w-1/4">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">swap_horiz</span>
+<span class="text-[11px] font-bold mt-1">Transfers</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary py-1 w-1/4">
+<span class="material-symbols-outlined text-[26px]">description</span>
+<span class="text-[11px] font-medium mt-1">Bills</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary py-1 w-1/4">
+<span class="material-symbols-outlined text-[26px]">menu</span>
+<span class="text-[11px] font-medium mt-1">More</span>
+</button>
+</div>
+<!-- Safe Area Inset Indicator for iOS -->
+<div class="h-5 bg-white"></div>
+</nav>
+<script>
+    const peCard = document.getElementById('pe-card');
+    const peTooltip = document.getElementById('pe-tooltip');
+    let holdTimer;
+
+    function showTooltip() {
+        peTooltip.classList.remove('hidden');
+    }
+
+    function hideTooltip() {
+        peTooltip.classList.add('hidden');
+    }
+
+    function toggleTooltip(e) {
+        e.stopPropagation();
+        hideTooltip();
+    }
+
+    // Interaction logic
+    peCard.addEventListener('mousedown', () => {
+        holdTimer = setTimeout(showTooltip, 600);
+    });
+
+    peCard.addEventListener('mouseup', () => clearTimeout(holdTimer));
+    peCard.addEventListener('mouseleave', () => clearTimeout(holdTimer));
+
+    peCard.addEventListener('touchstart', (e) => {
+        holdTimer = setTimeout(showTooltip, 600);
+    }, { passive: true });
+
+    peCard.addEventListener('touchend', () => clearTimeout(holdTimer));
+
+    peCard.addEventListener('click', () => {
+        if (peTooltip.classList.contains('hidden')) {
+            showTooltip();
+        }
+    });
+
+    // Scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('top-bar');
+        if (window.scrollY > 10) {
+            header.classList.add('shadow-sm');
+        } else {
+            header.classList.remove('shadow-sm');
+        }
+    });
+</script>
+
+
+</body></html>

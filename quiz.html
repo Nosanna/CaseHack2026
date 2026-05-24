@@ -137,7 +137,7 @@
 </head>
 
 <body class="bg-[#f4f4f4] text-on-background font-body-md min-h-screen with-mockup"
-      x-data="quizApp()" x-cloak>
+      x-data="quizApp()" x-init="init()" x-cloak>
 <div class="iphone-x">
   <div class="side-button power-button"></div>
   <div class="side-button volume-buttons volume-up"></div>
@@ -160,6 +160,8 @@
     
     <main class="flex-grow px-container-padding-mobile md:px-container-padding-desktop mt-6 overflow-y-auto pb-32">
     
+      <div x-show="step === 'quiz'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-4" x-transition:enter-end="opacity-100 transform translate-x-0">
+    
       <!-- Progress -->
       <div class="mb-8">
         <div class="flex justify-between items-center mb-2">
@@ -181,21 +183,22 @@
       <section class="mb-10">
         <div class="flex items-center gap-2 mb-4">
           <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">1. WHAT ARE YOU INVESTING FOR?</h3>
-          <span x-show="goal" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+          <span x-show="goal.length > 0" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
             <span class="material-symbols-outlined" style="font-size:14px;">check</span>
           </span>
+          <span class="text-[11px] text-secondary ml-auto" x-text="goal.length ? `${goal.length} selected` : 'Select all that apply'"></span>
         </div>
         <div class="grid grid-cols-1 gap-3">
           <template x-for="opt in goalOptions" :key="opt.id">
             <div class="apple-health-card p-5 rounded-lg bg-white shadow-sm flex items-center gap-4 cursor-pointer border"
-                 :class="goal === opt.id ? 'border-[#EC111A]' : 'border-transparent hover:border-[#d1d1d1]'"
-                 @click="selectGoal(opt.id)">
+                 :class="goal.includes(opt.id) ? 'border-[#EC111A]' : 'border-transparent hover:border-[#d1d1d1]'"
+                 @click="toggleGoal(opt.id)">
               <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-                   :class="goal === opt.id ? 'bg-[#ffeaea] text-[#EC111A]' : 'bg-[#f4f4f4] text-secondary'">
+                   :class="goal.includes(opt.id) ? 'bg-[#ffeaea] text-[#EC111A]' : 'bg-[#f4f4f4] text-secondary'">
                 <span class="material-symbols-outlined" x-text="opt.icon"></span>
               </div>
               <div class="flex-1"><p class="font-bold text-on-background" x-text="opt.label"></p></div>
-              <div class="ml-auto" x-show="goal === opt.id" x-transition.scale.opacity>
+              <div class="ml-auto" x-show="goal.includes(opt.id)" x-transition.scale.opacity>
                 <span class="material-symbols-outlined text-[#EC111A]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
               </div>
             </div>
@@ -275,39 +278,77 @@
             </button>
           </template>
         </div>
-      </section>
-    
-      <!-- Live Recommendation Preview -->
-      <section class="mb-10 fade-in" x-show="canSubmit" x-transition>
-        <div class="bg-white border border-[#EC111A]/20 rounded-xl p-5 shadow-sm">
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-lg bg-[#ffeaea] flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[#EC111A]">auto_awesome</span>
-            </div>
-            <div class="flex-1">
-              <p class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-1">Live recommendation</p>
-              <p class="text-[15px] text-on-background leading-snug">
-                Based on your answers we'll match you to a
-                <span class="font-bold text-[#EC111A]" x-text="recommendedAccount"></span>
-                account with
-                <span class="font-bold text-[#EC111A]">$<span x-text="recommendedAmount"></span>/month</span>.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
-    
-      <!-- Primary CTA -->
-      <div class="mt-16 text-center">
-        <button class="w-full md:w-auto md:min-w-[320px] py-4 px-8 rounded-lg font-bold text-lg shadow-sm transition-all"
+
+      </div><!-- end step === 'quiz' -->
+
+      <!-- Step 2: Live Recommendation Screen -->
+      <div x-show="step === 'recommendation'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-4" x-transition:enter-end="opacity-100 transform translate-x-0">
+        <section class="mb-8">
+          <div class="w-16 h-16 rounded-2xl bg-[#ffeaea] flex items-center justify-center mb-6 mx-auto shadow-sm">
+            <span class="material-symbols-outlined text-primary text-4xl">auto_awesome</span>
+          </div>
+          <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-center text-on-background mb-4">You're matched!</h2>
+          <p class="font-body-md text-center text-secondary mb-10">Based on your goals and risk profile, here is our live recommendation for you.</p>
+
+          <div class="bg-white border border-[#EC111A]/20 rounded-2xl p-8 shadow-md relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+              <span class="material-symbols-outlined text-8xl">verified</span>
+            </div>
+            
+            <div class="relative z-10">
+              <p class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Live recommendation</p>
+              <h3 class="text-2xl font-bold text-on-background mb-6">
+                Based on your answers we'll match you to a 
+                <span class="text-primary" x-text="recommendedAccount"></span> 
+                account.
+              </h3>
+              
+              <div class="space-y-4 pt-4 border-t border-gray-100">
+                <div class="flex justify-between items-center">
+                  <span class="text-secondary">Monthly target</span>
+                  <span class="text-xl font-bold text-on-background">$<span x-text="recommendedAmount"></span>/mo</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-secondary">Risk level</span>
+                  <span class="font-bold" :class="riskColorClass" x-text="riskLabel"></span>
+                </div>
+                <div class="flex flex-col gap-1 py-1">
+                  <span class="text-xs text-secondary uppercase tracking-widest font-bold">Primary Goals</span>
+                  <span class="font-bold text-on-background text-[15px] leading-tight" x-text="goalLabels"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="mt-8 text-primary font-bold flex items-center gap-2 mx-auto hover:opacity-80 transition-opacity" @click="step = 'quiz'">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Change answers
+          </button>
+        </section>
+
+        <!-- CTA for recommendation step -->
+        <div class="mt-6 mb-4">
+          <button class="w-full py-4 rounded-lg font-bold text-lg bg-[#EC111A] text-white shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] transition-all"
+                  @click="submit()">
+            Explore My Roadmap
+          </button>
+          <p class="mt-3 text-xs text-center text-secondary">You can adjust these preferences at any time.</p>
+        </div>
+      </div>
+
+      <!-- CTA for quiz step only -->
+      <div x-show="step === 'quiz'" class="mt-10 mb-4">
+        <button class="w-full py-4 rounded-lg font-bold text-lg shadow-sm transition-all"
                 :class="canSubmit
                   ? 'bg-[#EC111A] text-white hover:shadow-lg hover:brightness-110 active:scale-[0.98]'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
                 :disabled="!canSubmit"
                 @click="submit()">
-          Generate My Roadmap
+          <span x-text="step === 'quiz' ? 'Generate My Roadmap' : 'Explore My Roadmap'"></span>
         </button>
-        <p class="mt-4 text-xs text-secondary" x-text="canSubmit ? 'You can adjust these preferences at any time.' : 'Please answer questions 1 and 2 to continue.'"></p>
+        <p class="mt-3 text-xs text-center text-secondary" x-text="canSubmit ? 'You can adjust these preferences at any time.' : 'Please answer questions 1 and 2 to continue.'"></p>
       </div>
     </main>
     
@@ -318,10 +359,10 @@
           <span class="material-symbols-outlined text-[26px]">home</span>
           <span class="text-[11px] font-medium mt-0.5">Home</span>
         </a>
-        <button @click="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="portfolio.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
           <span class="text-[11px] font-medium mt-0.5">Accounts</span>
-        </button>
+        </a>
         <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
           <span class="text-[11px] mt-0.5">Invest</span>
@@ -330,10 +371,10 @@
           <span class="material-symbols-outlined text-[26px]">lightbulb</span>
           <span class="text-[11px] font-medium mt-0.5">Insights</span>
         </button>
-        <button @click="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+        <a href="profile.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
           <span class="material-symbols-outlined text-[26px]">person</span>
           <span class="text-[11px] font-medium mt-0.5">Profile</span>
-        </button>
+        </a>
       </div>
     </nav>
   </div>
@@ -367,7 +408,8 @@
   function quizApp() {
     return {
       /* ---------- state ---------- */
-      goal: 'home',
+      step: 'quiz',
+      goal: ['home'],
       timeline: '3-5',
       risk: 50,
       priorities: ['low_fees', 'simple_portfolio', 'us_exposure'],
@@ -402,7 +444,9 @@
         if (saved) {
           try {
             const data = JSON.parse(saved);
-            if (data.goal !== undefined) this.goal = data.goal;
+            if (Array.isArray(data.goal)) this.goal = data.goal;
+            else if (typeof data.goal === 'string' && data.goal) this.goal = [data.goal];
+            
             if (data.timeline !== undefined) this.timeline = data.timeline;
             if (typeof data.risk === 'number') this.risk = data.risk;
             if (Array.isArray(data.priorities)) this.priorities = data.priorities;
@@ -411,7 +455,11 @@
       },
 
       /* ---------- selection handlers ---------- */
-      selectGoal(id)     { this.goal = (this.goal === id) ? '' : id; },
+      toggleGoal(id) {
+        this.goal = this.goal.includes(id)
+          ? this.goal.filter(g => g !== id)
+          : [...this.goal, id];
+      },
       selectTimeline(id) { this.timeline = (this.timeline === id) ? '' : id; },
       togglePriority(id) {
         this.priorities = this.priorities.includes(id)
@@ -448,19 +496,23 @@
       /* ---------- computed: progress + recommendation ---------- */
       get answeredCount() {
         let n = 0;
-        if (this.goal) n++;
+        if (this.goal.length > 0) n++;
         if (this.timeline) n++;
         if (typeof this.risk === 'number') n++;
         if (this.priorities.length > 0) n++;
         return n;
       },
       get progressPct() { return Math.max(5, (this.answeredCount / 4) * 100); },
-      get canSubmit() { return !!this.goal && !!this.timeline; },
+      get canSubmit() { return this.goal.length > 0 && !!this.timeline; },
+
+      get goalLabels() {
+        return this.goal.map(id => this.goalOptions.find(o => o.id === id)?.label).join(', ');
+      },
 
       get recommendedAccount() {
-        if (this.goal === 'home')       return 'FHSA';
-        if (this.goal === 'retirement') return 'RRSP';
-        if (this.timeline === '<1')     return 'High-Interest Savings';
+        if (this.goal.includes('home'))       return 'FHSA';
+        if (this.goal.includes('retirement')) return 'RRSP';
+        if (this.timeline === '<1')           return 'High-Interest Savings';
         return 'TFSA';
       },
       get recommendedAmount() {
@@ -481,9 +533,18 @@
           alert('Please answer questions 1 and 2 to continue.');
           return;
         }
+        
+        if (this.step === 'quiz') {
+            this.step = 'recommendation';
+            // Scroll to top
+            const container = document.querySelector('main');
+            if (container) container.scrollTop = 0;
+            return;
+        }
+
         const payload = {
           goal: this.goal,
-          goalLabel: this.goalOptions.find(o => o.id === this.goal)?.label,
+          goalLabel: this.goalLabels,
           timeline: this.timeline,
           timelineLabel: this.timelineOptions.find(o => o.id === this.timeline)?.label.replace('<br>', ' '),
           risk: this.risk,

@@ -1,423 +1,457 @@
 /**
- * ScotiaInvested+ — Financial Term Explainer
- * Strategy: bottom-sheet modal triggered by clicking .sg-term spans.
- * Appended inside .screen so it works within the iPhone mockup's overflow:hidden.
+ * ScotiaInvested+ Financial Glossary Tooltip System
+ * Usage: wrap any text in <span data-term="etf">ETF</span>
+ * The system auto-injects a floating tooltip bubble on hover/tap.
  */
-
-// ─── Glossary ───────────────────────────────────────────────────────────────
 
 const GLOSSARY = {
   etf: {
     term: "ETF",
     fullName: "Exchange-Traded Fund",
     icon: "candlestick_chart",
-    color: "#bf000f",
     definition:
-      "A basket of investments (stocks, bonds, etc.) that trades on a stock exchange like a single share. ETFs let you own a tiny slice of many companies at once — spreading your risk and keeping costs low.",
+      "A basket of investments (stocks, bonds, etc.) that trades on a stock exchange like a single share. ETFs let you own a tiny slice of many companies at once, spreading your risk and keeping fees low.",
     example: "Buying VFV gives you exposure to 500 top U.S. companies in one click.",
   },
   mer: {
     term: "MER",
     fullName: "Management Expense Ratio",
     icon: "percent",
-    color: "#bf000f",
     definition:
-      "The annual fee charged by a fund, shown as a % of your investment. It's automatically deducted — you never write a cheque. Lower is always better.",
-    example: "VFV's MER of 0.09% costs just $0.90/year on a $1,000 investment.",
+      "The annual fee charged by a fund, shown as a percentage of your investment. It's deducted automatically — you never write a cheque. Lower is better: 0.09% means you pay just $0.90/year per $1,000 invested.",
+    example: "VFV's MER of 0.09% is near the industry minimum.",
   },
   yield: {
-    term: "Dividend Yield",
-    fullName: "Annual payout as % of price",
+    term: "Yield",
+    fullName: "Dividend Yield",
     icon: "paid",
-    color: "#16a34a",
     definition:
-      "The yearly cash income the fund pays you from dividends, stated as a percentage of its price. Think of it like interest on a savings account — except it comes from company profits.",
-    example: "A 1.2% yield on $1,000 pays you ~$12/year in cash distributions.",
-  },
-  risk: {
-    term: "Risk Level",
-    fullName: "How much your investment may fluctuate",
-    icon: "show_chart",
-    color: "#d97706",
-    definition:
-      "How much the value of your investment may go up or down in the short term. Higher risk = bigger potential gains, but also bigger possible losses. Choose a level that matches your comfort.",
-    example: "Medium risk: expect 10–20% swings year-to-year in exchange for long-term growth.",
-  },
-  "index fund": {
-    term: "Index Fund",
-    fullName: "Passive market-tracking fund",
-    icon: "trending_up",
-    color: "#bf000f",
-    definition:
-      "A fund that Simply copies a market index (like the S&P 500) instead of having a manager pick stocks. This keeps fees ultra-low and historically outperforms most actively managed funds.",
-    example: "VFV and ZCN are both index funds — they follow an index, not a manager's opinion.",
+      "The yearly cash income the fund pays you from dividends, stated as a percentage of its price. It's like interest on a savings account, except it comes from company profits instead of a bank.",
+    example: "A 1.2% yield on a $1,000 investment pays you ~$12/year.",
   },
   "s&p 500": {
     term: "S&P 500",
     fullName: "Standard & Poor's 500",
     icon: "leaderboard",
-    color: "#1d4ed8",
     definition:
-      "An index tracking the 500 largest publicly traded U.S. companies — about 80% of the entire U.S. stock market. It's the most widely watched benchmark for overall market performance.",
-    example: "Apple, Microsoft, and NVIDIA all sit inside the S&P 500.",
+      "An index tracking the 500 largest publicly traded companies in the United States, representing about 80% of the U.S. stock market. It's widely used as the benchmark for overall market performance.",
+    example: "Apple, Microsoft, and NVIDIA are all in the S&P 500.",
   },
   tsx: {
     term: "TSX",
     fullName: "Toronto Stock Exchange",
-    icon: "account_balance",
-    color: "#bf000f",
+    icon: "store",
     definition:
-      "Canada's primary stock exchange, home to over 1,500 publicly traded companies — including major banks, energy firms, and resource companies. TSX-based ETFs give you Canadian market exposure.",
+      "Canada's primary stock exchange, home to over 1,500 companies including major banks, energy firms, and miners. Investing in TSX-listed ETFs gives you Canadian market exposure.",
     example: "ZCN tracks the TSX and holds hundreds of Canadian companies.",
+  },
+  "index fund": {
+    term: "Index Fund",
+    fullName: "Index Fund",
+    icon: "trending_up",
+    definition:
+      "A fund that passively follows a market index (like the S&P 500 or TSX) instead of having a manager pick individual stocks. This keeps fees ultra-low and historically beats most actively managed funds over time.",
+    example: "VFV and ZCN are both index funds — they copy an index, not a manager's opinion.",
+  },
+  risk: {
+    term: "Risk",
+    fullName: "Investment Risk Level",
+    icon: "show_chart",
+    definition:
+      "How much the value of your investment may go up or down in the short term. Higher risk usually means bigger potential gains — but also bigger possible losses. Choose a level that won't make you lose sleep.",
+    example: "Medium risk: comfortable with 10-20% swings in exchange for long-term growth.",
   },
   dividend: {
     term: "Dividend",
-    fullName: "Profit shared with shareholders",
+    fullName: "Dividend",
     icon: "currency_exchange",
-    color: "#16a34a",
     definition:
-      "A cash payment companies distribute to shareholders from their profits, usually every quarter. When you hold an ETF, you automatically receive your share of all dividends paid by the companies inside it.",
-    example: "If Apple pays a $0.25/share dividend, your VFV ETF gets a proportional payout.",
+      "A cash payment companies make to shareholders from their profits, usually every quarter. When you hold an ETF, you automatically receive a share of all dividends paid by the companies inside it.",
+    example: "If Apple pays a dividend, your VFV ETF receives a proportional payout.",
   },
   portfolio: {
     term: "Portfolio",
-    fullName: "Your personal investment collection",
+    fullName: "Investment Portfolio",
     icon: "pie_chart",
-    color: "#7c3aed",
     definition:
-      "Your complete set of investments — every ETF, stock, or bond you own. A well-diversified portfolio spreads money across different asset types so one bad investment doesn't sink everything.",
-    example: "Your ScotiaInvested+ portfolio holds VFV (U.S.), XBAL (Balanced), and ZCN (Canada).",
-  },
-  bond: {
-    term: "Bond",
-    fullName: "Fixed-income investment",
-    icon: "receipt_long",
-    color: "#0891b2",
-    definition:
-      "A loan you give to a government or company that pays you back with fixed interest over a set period. Bonds are generally lower risk than stocks but grow more slowly — they stabilize a portfolio.",
-    example: "XBAL holds bonds alongside stocks to cushion against market downturns.",
-  },
-  equity: {
-    term: "Equity",
-    fullName: "Ownership in a company (stocks)",
-    icon: "bar_chart",
-    color: "#bf000f",
-    definition:
-      "Ownership in a company. When you buy equity through an ETF, you own a tiny slice of each company inside it — and benefit directly when those companies grow in value.",
-    example: "VFV is an equity ETF — it holds actual shares (equities) of 500 U.S. companies.",
-  },
-  "emergency fund": {
-    term: "Emergency Fund",
-    fullName: "3–6 months of expenses, always accessible",
-    icon: "shield",
-    color: "#16a34a",
-    definition:
-      "Cash kept accessible to cover unexpected expenses (job loss, medical bills, repairs) without touching your investments. Experts recommend 3–6 months of essential expenses before you invest.",
-    example: "Your 6.8 months coverage means you're fully protected and ready to start investing.",
-  },
-  "cash flow": {
-    term: "Cash Flow",
-    fullName: "Monthly income minus expenses",
-    icon: "account_balance_wallet",
-    color: "#0891b2",
-    definition:
-      "The net money moving in and out of your accounts each month. Positive cash flow (income > expenses) is what ScotiaInvested+ uses to find a safe amount to invest without affecting your lifestyle.",
-    example: "Income $2,850 − Essentials $1,940 − Flexible $510 = $400 available cash flow.",
-  },
-  diversification: {
-    term: "Diversification",
-    fullName: "Spreading risk across investments",
-    icon: "hub",
-    color: "#7c3aed",
-    definition:
-      "Spreading your money across different investments so one bad performer doesn't wreck your whole portfolio. It's the investing equivalent of \"don't put all your eggs in one basket.\"",
-    example: "Holding VFV (U.S.), XBAL (balanced), and ZCN (Canada) is well diversified.",
+      "Your complete collection of investments — all the ETFs, stocks, or bonds you own. A well-diversified portfolio spreads money across different asset types to reduce the impact of any single investment performing poorly.",
+    example: "Your ScotiaInvested+ portfolio holds VFV, XBAL, and ZCN.",
   },
   "asset class": {
     term: "Asset Class",
-    fullName: "Category of investment type",
+    fullName: "Asset Class",
     icon: "category",
-    color: "#bf000f",
     definition:
-      "A group of investments that share similar characteristics and react similarly to market conditions. The three main asset classes are equities (stocks), bonds, and cash.",
-    example: "XBAL is \"multi-asset\" because it holds both stocks and bonds.",
+      "A category of investment with similar characteristics and market behaviour. The main asset classes are stocks (equities), bonds (fixed income), and cash. Different classes react differently to economic events.",
+    example: "XBAL is multi-asset: it holds both stocks and bonds.",
+  },
+  bond: {
+    term: "Bond",
+    fullName: "Bond (Fixed Income)",
+    icon: "receipt_long",
+    definition:
+      "A loan you give to a government or company that pays you back with interest over a set period. Bonds are generally lower risk than stocks but also grow more slowly. They help balance a portfolio.",
+    example: "XBAL includes bonds to soften the ups and downs of its stock holdings.",
+  },
+  equity: {
+    term: "Equity",
+    fullName: "Equity (Stocks & Shares)",
+    icon: "bar_chart",
+    definition:
+      "Ownership in a company. When you buy equity (stocks or stock-based ETFs), you own a small piece of the business and benefit when it grows. Equities have the highest long-term growth potential but also the most short-term swings.",
+    example: "VFV is an equity ETF — it holds shares (equities) of 500 U.S. companies.",
+  },
+  "emergency fund": {
+    term: "Emergency Fund",
+    fullName: "Emergency Fund",
+    icon: "shield",
+    definition:
+      "Cash savings set aside to cover unexpected expenses (job loss, medical bills, car repairs) without touching your investments. Financial experts recommend keeping 3–6 months of essential expenses readily accessible.",
+    example: "Your 6.8 months of coverage means you're well protected before you start investing.",
+  },
+  "cash flow": {
+    term: "Cash Flow",
+    fullName: "Monthly Cash Flow",
+    icon: "account_balance",
+    definition:
+      "The net amount of money moving in and out of your accounts each month. Positive cash flow (income > expenses) is what Scotia uses to calculate a safe amount to invest without affecting your lifestyle.",
+    example: "Income $2,850 − Essentials $1,940 − Flexible $510 = $400 available.",
+  },
+  "diversification": {
+    term: "Diversification",
+    fullName: "Diversification",
+    icon: "hub",
+    definition:
+      "Spreading your money across different investments so that a single bad performer doesn't sink your whole portfolio. It's the investing equivalent of \"don't put all your eggs in one basket.\"",
+    example: "Holding VFV (U.S.), XBAL (balanced), and ZCN (Canada) is diversified.",
   },
 };
 
-// ─── Bottom-Sheet Modal ────────────────────────────────────────────────────
+/* ─────────────────────────── Tooltip DOM ─────────────────────────── */
 
-const SHEET_CSS = `
-  #sg-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0);
-    z-index: 9000;
-    display: none;
-    align-items: flex-end;
-    transition: background 0.25s ease;
-  }
-  #sg-overlay.sg-open {
-    display: flex;
-    background: rgba(0,0,0,0.38);
-  }
-  #sg-sheet {
-    width: 100%;
-    background: #fff;
-    border-radius: 20px 20px 0 0;
+const TOOLTIP_CSS = `
+  #sg-tooltip {
+    position: fixed;
+    z-index: 9999;
+    max-width: 280px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.10);
+    border: 1px solid rgba(191,0,15,0.12);
     padding: 0;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+    transition: opacity 0.22s cubic-bezier(.4,0,.2,1),
+                transform 0.22s cubic-bezier(.4,0,.2,1);
     font-family: 'Manrope', sans-serif;
-    box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
-  #sg-overlay.sg-open #sg-sheet {
-    transform: translateY(0);
+  #sg-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-  .sg-sheet-handle {
-    width: 36px; height: 4px;
-    background: #e0e0e0;
-    border-radius: 2px;
-    margin: 10px auto 0;
-  }
-  .sg-sheet-header {
+  .sg-tip-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 14px 16px 12px;
-    border-bottom: 1px solid #f0f0f0;
+    background: linear-gradient(135deg, #bf000f 0%, #ec111a 100%);
+    padding: 12px 14px 10px;
   }
-  .sg-sheet-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
+  .sg-tip-icon {
+    width: 28px;
+    height: 28px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    font-family: 'Material Symbols Outlined';
-    font-size: 20px;
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 16px;
     color: #fff;
   }
-  .sg-sheet-titles { flex: 1; }
-  .sg-sheet-term {
-    font-size: 16px; font-weight: 800;
-    color: #1a1a1a; line-height: 1.2;
+  .sg-tip-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.2;
   }
-  .sg-sheet-fullname {
-    font-size: 11px; font-weight: 500;
-    color: #888; margin-top: 1px;
+  .sg-tip-fullname {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.2;
+    margin-top: 1px;
   }
-  .sg-sheet-close {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: #f0f0f0;
-    border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Material Symbols Outlined';
-    font-size: 16px; color: #555;
-    flex-shrink: 0;
-    transition: background 0.15s;
+  .sg-tip-body {
+    padding: 12px 14px 10px;
   }
-  .sg-sheet-close:hover { background: #e0e0e0; }
-  .sg-sheet-body { padding: 16px; }
-  .sg-sheet-def {
-    font-size: 13px; color: #333;
-    line-height: 1.65; margin-bottom: 12px;
+  .sg-tip-def {
+    font-size: 11.5px;
+    color: #3a3a3a;
+    line-height: 1.55;
+    margin-bottom: 8px;
   }
-  .sg-sheet-example {
-    border-radius: 10px;
-    padding: 10px 12px;
-    border-left: 3px solid #bf000f;
+  .sg-tip-example {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
     background: #fff5f5;
-    display: flex; gap: 8px; align-items: flex-start;
+    border-radius: 8px;
+    padding: 7px 9px;
+    border-left: 3px solid #ec111a;
   }
-  .sg-eg-label {
-    font-size: 9px; font-weight: 800;
-    color: #bf000f; text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap; margin-top: 2px;
+  .sg-tip-example-label {
+    font-size: 9px;
+    font-weight: 800;
+    color: #bf000f;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    margin-top: 1px;
   }
-  .sg-eg-text {
-    font-size: 12px; color: #555; line-height: 1.5;
+  .sg-tip-example-text {
+    font-size: 10.5px;
+    color: #5f5e5e;
+    line-height: 1.45;
   }
-  .sg-got-it {
-    display: block; width: 100%;
-    margin: 14px 0 4px;
-    padding: 13px;
-    background: #bf000f; color: #fff;
-    border: none; border-radius: 12px;
-    font-size: 14px; font-weight: 700;
-    cursor: pointer; font-family: 'Manrope', sans-serif;
-    transition: filter 0.15s;
-  }
-  .sg-got-it:hover { filter: brightness(1.1); }
   .sg-term {
-    border-bottom: 1.5px dashed rgba(191,0,15,0.55);
-    cursor: pointer;
+    border-bottom: 1.5px dashed rgba(191,0,15,0.45);
+    cursor: help;
     color: inherit;
-    display: inline;
+    transition: color 0.15s, border-color 0.15s;
   }
-  .sg-term:hover { color: #bf000f; border-color: #bf000f; }
+  .sg-term:hover, .sg-term.active {
+    color: #bf000f;
+    border-color: #bf000f;
+  }
 `;
 
-function getScreen() {
-  return document.querySelector(".iphone-x .screen") || document.body;
-}
-
 function injectStyles() {
-  if (document.getElementById("sg-css")) return;
-  const s = document.createElement("style");
-  s.id = "sg-css";
-  s.textContent = SHEET_CSS;
-  document.head.appendChild(s);
+  if (document.getElementById("sg-glossary-styles")) return;
+  const style = document.createElement("style");
+  style.id = "sg-glossary-styles";
+  style.textContent = TOOLTIP_CSS;
+  document.head.appendChild(style);
 }
 
-function buildSheet() {
-  if (document.getElementById("sg-overlay")) return;
-
-  const overlay = document.createElement("div");
-  overlay.id = "sg-overlay";
-  overlay.innerHTML = `
-    <div id="sg-sheet">
-      <div class="sg-sheet-handle"></div>
-      <div class="sg-sheet-header">
-        <div class="sg-sheet-icon" id="sg-s-icon"></div>
-        <div class="sg-sheet-titles">
-          <div class="sg-sheet-term" id="sg-s-term"></div>
-          <div class="sg-sheet-fullname" id="sg-s-fullname"></div>
-        </div>
-        <button class="sg-sheet-close" id="sg-close">close</button>
+function buildTooltip() {
+  if (document.getElementById("sg-tooltip")) return;
+  const el = document.createElement("div");
+  el.id = "sg-tooltip";
+  el.setAttribute("role", "tooltip");
+  el.innerHTML = `
+    <div class="sg-tip-header">
+      <div class="sg-tip-icon material-symbols-outlined" id="sg-tip-icon">info</div>
+      <div>
+        <div class="sg-tip-title" id="sg-tip-title"></div>
+        <div class="sg-tip-fullname" id="sg-tip-fullname"></div>
       </div>
-      <div class="sg-sheet-body">
-        <div class="sg-sheet-def" id="sg-s-def"></div>
-        <div class="sg-sheet-example">
-          <span class="sg-eg-label">e.g.</span>
-          <span class="sg-eg-text" id="sg-s-eg"></span>
-        </div>
-        <button class="sg-got-it" id="sg-got-it">Got it!</button>
+    </div>
+    <div class="sg-tip-body">
+      <div class="sg-tip-def" id="sg-tip-def"></div>
+      <div class="sg-tip-example">
+        <span class="sg-tip-example-label">e.g.</span>
+        <span class="sg-tip-example-text" id="sg-tip-example"></span>
       </div>
     </div>
   `;
+  document.body.appendChild(el);
+}
 
-  getScreen().appendChild(overlay);
+let activeTarget = null;
+let hideTimer = null;
 
-  // Close handlers
-  document.getElementById("sg-close").onclick = closeSheet;
-  document.getElementById("sg-got-it").onclick = closeSheet;
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeSheet();
+function showTooltip(target, entry) {
+  clearTimeout(hideTimer);
+  activeTarget = target;
+
+  const tip = document.getElementById("sg-tooltip");
+  document.getElementById("sg-tip-icon").textContent = entry.icon || "info";
+  document.getElementById("sg-tip-title").textContent = entry.term;
+  document.getElementById("sg-tip-fullname").textContent = entry.fullName || "";
+  document.getElementById("sg-tip-def").textContent = entry.definition;
+  document.getElementById("sg-tip-example").textContent = entry.example || "";
+
+  // Position the tooltip — anchored to target, clamped to viewport
+  tip.style.opacity = "0";
+  tip.style.display = "block";
+  tip.classList.remove("visible");
+
+  const rect = target.getBoundingClientRect();
+  const tipW = 280;
+  const tipH = tip.offsetHeight || 180;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const margin = 8;
+
+  // Try below first, then above
+  let top = rect.bottom + margin;
+  if (top + tipH > vh - margin) top = rect.top - tipH - margin;
+  if (top < margin) top = margin;
+
+  let left = rect.left + rect.width / 2 - tipW / 2;
+  left = Math.max(margin, Math.min(left, vw - tipW - margin));
+
+  tip.style.top = `${top}px`;
+  tip.style.left = `${left}px`;
+  tip.style.width = `${tipW}px`;
+
+  requestAnimationFrame(() => {
+    tip.classList.add("visible");
   });
+
+  target.classList.add("active");
 }
 
-function openSheet(entry) {
-  const overlay = document.getElementById("sg-overlay");
-  if (!overlay) return;
-
-  const iconEl = document.getElementById("sg-s-icon");
-  iconEl.textContent = entry.icon || "info";
-  iconEl.style.background = entry.color || "#bf000f";
-
-  document.getElementById("sg-s-term").textContent = entry.term;
-  document.getElementById("sg-s-fullname").textContent = entry.fullName || "";
-  document.getElementById("sg-s-def").textContent = entry.definition;
-  document.getElementById("sg-s-eg").textContent = entry.example || "";
-
-  // Show overlay first (needed for flex to be applied), then animate
-  overlay.style.display = "flex";
-  // Force reflow so transition fires
-  void overlay.offsetHeight;
-  overlay.classList.add("sg-open");
+function hideTooltip(immediate) {
+  const tip = document.getElementById("sg-tooltip");
+  if (!tip) return;
+  const delay = immediate ? 0 : 200;
+  hideTimer = setTimeout(() => {
+    tip.classList.remove("visible");
+    if (activeTarget) activeTarget.classList.remove("active");
+    activeTarget = null;
+    setTimeout(() => {
+      if (!tip.classList.contains("visible")) tip.style.display = "none";
+    }, 250);
+  }, delay);
 }
 
-function closeSheet() {
-  const overlay = document.getElementById("sg-overlay");
-  if (!overlay) return;
-  overlay.classList.remove("sg-open");
-  setTimeout(() => {
-    overlay.style.display = "none";
-  }, 300);
-}
+/* ─────────────────────────── Auto-wrap terms ─────────────────────────── */
 
-// ─── Auto-wrap text nodes ─────────────────────────────────────────────────
-
-function wrapTerms(root) {
+/**
+ * Walk text nodes and wrap glossary matches with <span data-term="...">
+ * We look for whole-word matches (case-insensitive).
+ */
+function wrapTermsInNode(root) {
+  // Sort keys longest-first so "asset class" matches before "asset"
   const keys = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
-  const escaped = keys.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  const re = new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+  const escapedKeys = keys.map((k) =>
+    k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  );
+  const pattern = new RegExp(`\\b(${escapedKeys.join("|")})\\b`, "gi");
 
+  // Gather all text nodes under root, skipping scripts/styles/existing spans
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
-      const p = node.parentElement;
-      if (!p) return NodeFilter.FILTER_REJECT;
-      const tag = p.tagName.toUpperCase();
+      const parent = node.parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      const tag = parent.tagName.toUpperCase();
       if (["SCRIPT", "STYLE", "TEXTAREA", "INPUT"].includes(tag))
         return NodeFilter.FILTER_REJECT;
-      // Don't re-wrap already-wrapped or inside the sheet
-      if (p.closest(".sg-term, #sg-overlay"))
+      if (parent.dataset && parent.dataset.term !== undefined)
+        return NodeFilter.FILTER_REJECT;
+      if (parent.classList.contains("sg-term"))
         return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
   });
 
-  const nodes = [];
+  const textNodes = [];
   let n;
-  while ((n = walker.nextNode())) nodes.push(n);
+  while ((n = walker.nextNode())) textNodes.push(n);
 
-  nodes.forEach((textNode) => {
+  textNodes.forEach((textNode) => {
     const text = textNode.nodeValue;
-    re.lastIndex = 0;
-    if (!re.test(text)) return;
-    re.lastIndex = 0;
+    if (!pattern.test(text)) return;
+    pattern.lastIndex = 0;
 
     const frag = document.createDocumentFragment();
     let last = 0;
     let m;
-
-    while ((m = re.exec(text)) !== null) {
-      if (m.index > last)
+    while ((m = pattern.exec(text)) !== null) {
+      if (m.index > last) {
         frag.appendChild(document.createTextNode(text.slice(last, m.index)));
-
+      }
       const key = m[0].toLowerCase();
       const entry = GLOSSARY[key];
       if (entry) {
         const span = document.createElement("span");
         span.className = "sg-term";
-        span.dataset.sgKey = key;
+        span.dataset.term = key;
         span.textContent = m[0];
+        span.setAttribute("tabindex", "0");
+        span.setAttribute("aria-label", `${m[0]}: ${entry.definition}`);
         frag.appendChild(span);
       } else {
         frag.appendChild(document.createTextNode(m[0]));
       }
       last = m.index + m[0].length;
     }
-
-    if (last < text.length)
+    if (last < text.length) {
       frag.appendChild(document.createTextNode(text.slice(last)));
-
+    }
     textNode.parentNode.replaceChild(frag, textNode);
   });
 }
 
-// ─── Event binding ────────────────────────────────────────────────────────
+/* ─────────────────────────── Event binding ─────────────────────────── */
 
 function bindEvents() {
-  // Single delegated click on document
-  document.addEventListener("click", (e) => {
+  const tip = document.getElementById("sg-tooltip");
+
+  document.addEventListener("mouseover", (e) => {
     const term = e.target.closest(".sg-term");
     if (!term) return;
-    e.stopPropagation();
-    e.preventDefault();
-    const key = term.dataset.sgKey;
+    const key = term.dataset.term;
     const entry = GLOSSARY[key];
-    if (entry) openSheet(entry);
+    if (entry) showTooltip(term, entry);
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    const term = e.target.closest(".sg-term");
+    if (!term) return;
+    hideTooltip(false);
+  });
+
+  // Keep tooltip alive when mouse moves over it
+  tip.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+  tip.addEventListener("mouseleave", () => hideTooltip(false));
+
+  // Tap/click support for mobile
+  document.addEventListener("click", (e) => {
+    const term = e.target.closest(".sg-term");
+    if (term) {
+      e.stopPropagation();
+      const key = term.dataset.term;
+      const entry = GLOSSARY[key];
+      if (entry) {
+        if (activeTarget === term) {
+          hideTooltip(true);
+        } else {
+          showTooltip(term, entry);
+        }
+      }
+      return;
+    }
+    // Click outside closes
+    if (!tip.contains(e.target)) hideTooltip(true);
+  });
+
+  // Keyboard accessibility
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") hideTooltip(true);
+    if (e.key === "Enter" || e.key === " ") {
+      const term = e.target.closest(".sg-term");
+      if (term) {
+        e.preventDefault();
+        const key = term.dataset.term;
+        const entry = GLOSSARY[key];
+        if (entry) showTooltip(term, entry);
+      }
+    }
   });
 }
 
-// ─── Init ─────────────────────────────────────────────────────────────────
+/* ─────────────────────────── Init ─────────────────────────── */
 
 function initGlossary() {
   injectStyles();
-  buildSheet();
-  wrapTerms(document.body);
+  buildTooltip();
+  wrapTermsInNode(document.body);
   bindEvents();
 }
 

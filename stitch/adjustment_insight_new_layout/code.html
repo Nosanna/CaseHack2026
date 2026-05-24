@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scotia InvestSense™ - Dynamic Monthly Adjustment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .insight-card-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+        }
+        /* Scotiabank specific red */
+        .bg-scotia-red { background-color: #EC111A; }
+        .text-scotia-red { color: #EC111A; }
+        .border-scotia-red { border-color: #EC111A; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#1a1c1c",
+                      "surface-tint": "#EC111A",
+                      "on-primary-fixed-variant": "#930008",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#f9f9f9",
+                      "on-error-container": "#93000a",
+                      "primary": "#EC111A",
+                      "tertiary-container": "#757474",
+                      "inverse-on-surface": "#f1f1f1",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#e4e2e2",
+                      "on-primary-fixed": "#410001",
+                      "surface-container": "#eeeeee",
+                      "inverse-surface": "#2f3131",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#ffffff",
+                      "on-secondary-fixed-variant": "#474746",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#636262",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-container": "#fefcfc",
+                      "outline-variant": "#e9bcb6",
+                      "secondary": "#5f5e5e",
+                      "surface-container-high": "#e8e8e8",
+                      "inverse-primary": "#ffb4aa",
+                      "surface": "#f9f9f9",
+                      "surface-bright": "#f9f9f9",
+                      "surface-dim": "#dadada",
+                      "secondary-fixed": "#e5e2e1",
+                      "outline": "#936e69",
+                      "secondary-container": "#e2dfde",
+                      "tertiary-fixed-dim": "#c7c6c6",
+                      "tertiary": "#5c5c5c",
+                      "on-tertiary-fixed": "#1b1c1c",
+                      "on-tertiary-fixed-variant": "#464747",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e2e2e2",
+                      "surface-container-highest": "#e2e2e2",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "on-surface": "#1a1c1c",
+                      "on-surface-variant": "#5e3f3b",
+                      "primary-container": "#EC111A",
+                      "primary-fixed-dim": "#ffb4aa",
+                      "primary-fixed": "#ffdad5",
+                      "surface-container-low": "#f3f3f3",
+                      "on-secondary-fixed": "#1c1b1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.5rem", /* Matching IMAGE_6's tighter corners */
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding-mobile": "16px",
+                      "container-padding-desktop": "40px",
+                      "section-gap": "64px",
+                      "base": "8px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Manrope"],
+                      "body-lg": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "body-md": ["Manrope"],
+                      "headline-lg-mobile": ["Manrope"],
+                      "headline-lg": ["Manrope"],
+                      "label-md": ["Manrope"],
+                      "label-sm": ["Manrope"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-white flex justify-between items-center px-container-padding-mobile py-3 border-b border-surface-container">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA65EyVj4o40r87rIJexik0xc96IOIXdYnkcsseMekDNLBdsIQ7Qx7fleMXt4UIlUKw1qU5TzbNcXMrA4MGq3esOKGbcjPNeERWWgiFVLYlsXsRBTem9RoyG76OAcVx9KwXqK9yjfxlUzysVmPu9KInBqxdCV6qyGnmqdGJru3SAECQvpWLhymLSywiXppn4OqavjX1nqRdufZ12eFCRI_qOAVpT_O49l928iKJbMmHBSFgT92-VxnplkJsbrM2FJ4--dTT-5rOURP1"/>
+</div>
+<h1 class="font-bold text-lg text-scotia-red">Scotia InvestSense™</h1>
+</div>
+<button class="material-symbols-outlined text-scotia-red text-2xl" data-icon="help_outline">help_outline</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-container-padding-mobile md:px-container-padding-desktop py-6 max-w-lg mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-6">
+<span class="font-label-md text-[12px] text-secondary uppercase tracking-wider mb-1 block">InvestSense update</span>
+<h2 class="font-bold text-[24px] text-on-background leading-tight">Your safe-to-invest amount changed</h2>
+</div>
+<!-- Notification Body Card -->
+<div class="bg-white insight-card-shadow rounded-lg p-5 mb-gutter border border-surface-container">
+<!-- Comparison Cards -->
+<div class="bg-surface-container-low rounded-lg p-5 mb-gutter flex items-center justify-between">
+<div class="flex-1 text-center border-r border-surface-container">
+<span class="text-secondary font-medium text-[14px] block mb-2">Current</span>
+<span class="text-[32px] font-bold text-secondary line-through opacity-50">$134</span>
+</div>
+<div class="flex-1 text-center">
+<span class="text-primary font-medium text-[14px] block mb-2">Suggested</span>
+<span class="text-[36px] font-bold text-primary">$105</span>
+</div>
+</div>
+<!-- Reasoning List -->
+<div class="space-y-4 pt-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+<p class="text-[15px] text-on-background">Rent increased by <span class="font-bold text-primary">$120</span></p>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+<p class="text-[15px] text-on-background">Emergency fund remains <span class="font-bold text-on-background">&gt;6mo</span></p>
+</div>
+</div>
+</div>
+<!-- Future Projection -->
+<div class="bg-white insight-card-shadow rounded-lg p-5 mb-8 border border-surface-container">
+<div class="flex items-start gap-4 mb-4">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-blue-600">keyboard_arrow_up</span>
+</div>
+<div>
+<h3 class="text-[18px] font-bold text-on-background">Income increase detected</h3>
+<p class="text-[14px] text-secondary mt-1">
+        If your income continues at this level, you may be able to increase your investment amount to <span class="font-bold text-on-background">$160/month</span> next month.
+      </p>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex justify-between text-[12px] font-medium text-secondary mb-1.5">
+<span>Stability Check</span>
+<span>92% Confidence</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+</div>
+<button class="w-full border-2 border-primary text-primary py-3 rounded-lg font-bold text-[15px]">
+    Review next month
+  </button>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mb-24">
+<button class="w-full bg-primary text-white py-4 rounded-lg font-bold text-[16px] shadow-md">
+    Update to $105
+  </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="w-full border border-secondary text-on-background py-3.5 rounded-lg font-bold text-[14px]">
+      Keep $134
+    </button>
+<button class="w-full border border-secondary text-on-background py-3.5 rounded-lg font-bold text-[14px]">
+      Pause for 1 month
+    </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Matching IMAGE_6 structure) -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-surface-container flex justify-around items-center w-full pb-safe pt-2">
+<button class="flex flex-col items-center justify-center text-secondary p-2 min-w-[72px]">
+<span class="material-symbols-outlined text-[26px]">home</span>
+<span class="text-[10px] font-medium mt-0.5">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 min-w-[72px]">
+<span class="material-symbols-outlined text-[26px]">swap_horiz</span>
+<span class="text-[10px] font-medium mt-0.5">Transfers</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 min-w-[72px]">
+<span class="material-symbols-outlined text-[26px]">receipt_long</span>
+<span class="text-[10px] font-medium mt-0.5">Bills</span>
+</button>
+<button class="flex flex-col items-center justify-center text-scotia-red p-2 min-w-[72px] font-bold">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="text-[10px] mt-0.5">Invest</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 min-w-[72px]">
+<span class="material-symbols-outlined text-[26px]">menu</span>
+<span class="text-[10px] font-medium mt-0.5">More</span>
+</button>
+</nav>
+<script>
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            btn.classList.add('opacity-70');
+            setTimeout(() => btn.classList.remove('opacity-70'), 150);
+        });
+    });
+</script>
+</body></html>

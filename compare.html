@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>Compare ETFs | ScotiaInvested+</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/mockup.css" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#bf000f",
+          "background": "#f9f9f9",
+          "surface": "#ffffff",
+          "secondary": "#5f5e5e"
+        },
+        fontFamily: { "sans": ["Manrope", "sans-serif"] }
+      }
+    }
+  }
+</script>
+<style>
+  body { -webkit-tap-highlight-color: transparent; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .comparison-row { border-bottom: 1px solid #f0f0f0; }
+  .comparison-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-sans with-mockup" x-data="compareApp()" x-init="init()">
+<div class="iphone-x">
+  <div class="notch"></div>
+  <div class="screen overflow-hidden flex flex-col bg-white">
+    <!-- Header -->
+    <header class="w-full top-0 sticky z-50 bg-white flex justify-between items-center px-5 py-4 border-b">
+      <div class="flex items-center gap-3">
+        <button @click="window.history.back()" class="p-2 -ml-2 hover:bg-gray-100 rounded-full">
+          <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </button>
+        <span class="font-bold text-lg">Compare options</span>
+      </div>
+    </header>
+    
+    <main class="flex-grow overflow-y-auto pb-32">
+      <div class="p-5">
+        <div class="flex gap-4 mb-8">
+           <template x-for="etf in selectedData" :key="etf.id">
+             <div class="flex-1 text-center">
+               <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-bold mx-auto mb-2" x-text="etf.id"></div>
+               <p class="text-[10px] font-bold text-secondary uppercase tracking-tighter truncate" x-text="etf.name"></p>
+             </div>
+           </template>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="space-y-8">
+          <section>
+            <h3 class="text-xs font-bold text-secondary uppercase tracking-widest mb-4">Core Stats</h3>
+            <div class="bg-gray-50 rounded-2xl overflow-hidden border">
+              <!-- MER Row -->
+              <div class="comparison-row p-4 flex items-center justify-between">
+                <span class="text-xs text-secondary font-medium">MER (Fee)</span>
+                <div class="flex gap-4 text-sm font-bold">
+                  <template x-for="etf in selectedData" :key="etf.id">
+                    <span class="w-16 text-right" x-text="etf.mer"></span>
+                  </template>
+                </div>
+              </div>
+              <!-- Risk Row -->
+              <div class="comparison-row p-4 flex items-center justify-between">
+                <span class="text-xs text-secondary font-medium">Risk level</span>
+                <div class="flex gap-4 text-xs font-bold">
+                  <template x-for="etf in selectedData" :key="etf.id">
+                    <span class="w-16 text-right" x-text="etf.risk"></span>
+                  </template>
+                </div>
+              </div>
+              <!-- Focus Row -->
+              <div class="comparison-row p-4 flex items-center justify-between">
+                <span class="text-xs text-secondary font-medium">Primary Focus</span>
+                <div class="flex gap-4 text-[10px] font-bold leading-tight">
+                  <template x-for="etf in selectedData" :key="etf.id">
+                    <span class="w-16 text-right" x-text="etf.focus"></span>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 class="text-xs font-bold text-secondary uppercase tracking-widest mb-4">Performance</h3>
+            <div class="bg-gray-50 rounded-2xl overflow-hidden border">
+              <div class="comparison-row p-4 flex items-center justify-between">
+                <span class="text-xs text-secondary font-medium">1-Year Return</span>
+                <div class="flex gap-4 text-sm font-bold text-green-600">
+                  <template x-for="etf in selectedData" :key="etf.id">
+                    <span class="w-16 text-right" x-text="etf.yield"></span>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="mt-10 p-4 bg-primary/5 rounded-xl border border-primary/20">
+          <div class="flex gap-3">
+             <span class="material-symbols-outlined text-primary">info</span>
+             <p class="text-xs text-secondary leading-relaxed">
+               <span class="font-bold text-on-background">Pro Tip:</span> Low MER means more of your money stays in your pocket. VFV has the lowest fee among your selection.
+             </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Actions -->
+    <div class="absolute bottom-6 left-0 right-0 px-5 bg-white py-4 border-t z-50">
+      <button class="w-full bg-primary text-white py-4 rounded-xl font-bold active:scale-95 transition-all shadow-lg" onclick="location.href='etf-detail.html'">
+        View Details for VFV
+      </button>
+    </div>
+
+    <div class="home-bar"></div>
+  </div>
+</div>
+
+<script>
+function compareApp() {
+  return {
+    allEtfs: {
+      'VFV': { id: 'VFV', name: 'Vanguard S&P 500', mer: '0.09%', risk: 'Medium-High', focus: 'US Large Cap', yield: '+18.4%' },
+      'XBAL': { id: 'XBAL', name: 'iShares Balanced', mer: '0.20%', risk: 'Medium', focus: 'Balanced Mix', yield: '+12.1%' },
+      'ZCN': { id: 'ZCN', name: 'BMO S&P/TSX', mer: '0.06%', risk: 'Medium', focus: 'Canadian Stocks', yield: '+9.8%' }
+    },
+    selectedData: [],
+    init() {
+      const params = new URLSearchParams(window.location.search);
+      const ids = params.get('ids')?.split(',') || [];
+      this.selectedData = ids.map(id => this.allEtfs[id]).filter(Boolean);
+      if (this.selectedData.length === 0) this.selectedData = [this.allEtfs['VFV'], this.allEtfs['XBAL']];
+    }
+  }
+}
+</script>
+</body>
+</html>
