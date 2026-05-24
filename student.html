@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Scotia InvestSense™ - Student Safety Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-background": "#1a1c1c",
+          "surface-tint": "#EC111A",
+          "surface-container-lowest": "#ffffff",
+          "background": "#f9f9f9",
+          "primary": "#EC111A",
+          "on-primary": "#ffffff",
+          "surface-container": "#eeeeee",
+          "secondary": "#5f5e5e",
+          "surface-container-high": "#e8e8e8",
+          "surface": "#f9f9f9",
+          "surface-container-low": "#f3f3f3",
+          "on-surface": "#1a1c1c",
+          "primary-container": "#EC111A"
+        },
+        borderRadius: { "DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.5rem", "full": "9999px" },
+        spacing: {
+          "container-padding-mobile": "20px", "container-padding-desktop": "40px",
+          "section-gap": "64px", "base": "8px", "gutter": "24px"
+        },
+        fontFamily: {
+          "display-lg": ["Manrope"], "body-lg": ["Manrope"], "headline-md": ["Manrope"],
+          "body-md": ["Manrope"], "headline-lg-mobile": ["Manrope"], "headline-lg": ["Manrope"],
+          "label-md": ["Manrope"], "label-sm": ["Manrope"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; vertical-align: middle; }
+  .insight-card { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .insight-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.10); }
+  .progress-bar-fill { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  button, a { transition: all 0.2s ease; }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-28">
+
+<header class="bg-white sticky top-0 z-40 w-full px-container-padding-mobile border-b border-surface-container">
+  <div class="flex justify-between items-center py-4">
+    <button class="p-2 -ml-2 rounded-full hover:bg-gray-100 active:scale-95 transition-all" onclick="location.href='index.html'">
+      <span class="material-symbols-outlined text-secondary text-2xl">arrow_back</span>
+    </button>
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+        <span class="material-symbols-outlined text-secondary text-xl">person</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="w-5 h-5 flex items-center justify-center">
+          <svg class="w-full h-full text-primary fill-current" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" fill="none" r="10" stroke="currentColor" stroke-width="2.5"></circle>
+          </svg>
+        </div>
+        <span class="font-bold text-lg tracking-tight flex items-center">
+          <span class="text-on-background">Scotia</span>
+          <span class="text-primary ml-1">InvestSense™</span>
+        </span>
+      </div>
+    </div>
+    <button class="p-2 rounded-full hover:bg-gray-100 active:scale-95 transition-all" onclick="alert('Student Safety Mode protects your emergency cushion before suggesting investments.')">
+      <span class="material-symbols-outlined text-secondary text-2xl">help_outline</span>
+    </button>
+  </div>
+</header>
+
+<main class="max-w-xl mx-auto px-container-padding-mobile pt-8 relative z-10">
+
+  <section class="insight-card bg-surface-container-lowest rounded-lg p-6 border border-surface-container-high mb-gutter">
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center gap-2 bg-[#ffdad6] text-[#930008] px-3 py-1.5 rounded-full border border-primary/10">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+        <span class="text-xs font-bold uppercase tracking-wide">Student Safety Mode</span>
+      </div>
+      <button class="hover:opacity-80 active:scale-95 p-1 rounded-full" onclick="alert('Student Safety Mode is active for accounts under 25 with limited income.')">
+        <span class="material-symbols-outlined text-secondary opacity-60">info</span>
+      </button>
+    </div>
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <div>
+        <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">SAVINGS BALANCE</p>
+        <p class="text-3xl font-bold text-on-background">$3,200</p>
+      </div>
+      <div>
+        <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">AVG. EXPENSES</p>
+        <div class="flex items-baseline gap-1">
+          <p class="text-3xl font-bold text-on-background">$480</p>
+          <span class="text-xs text-secondary font-medium">/mo</span>
+        </div>
+      </div>
+    </div>
+    <div class="mb-6">
+      <div class="flex justify-between items-center mb-2">
+        <p class="text-sm font-bold text-secondary">Emergency Cushion (6 Months)</p>
+        <p class="text-sm font-bold text-on-background">$2,880</p>
+      </div>
+      <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden flex">
+        <div class="h-full bg-primary progress-bar-fill" style="width: 90%;"></div>
+        <div class="h-full bg-surface-container-high" style="width: 10%;"></div>
+      </div>
+    </div>
+    <p class="text-sm text-secondary italic mb-8 leading-relaxed">
+      InvestSense protects your emergency cushion first, then suggests a small beginner-friendly amount from extra savings.
+    </p>
+    <div class="bg-primary rounded-xl p-6 text-white flex justify-between items-center shadow-lg hover:shadow-xl transition-shadow">
+      <div>
+        <p class="text-sm font-bold opacity-90 mb-1">Safe Starter Amount</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-4xl font-bold">$100</span>
+          <span class="text-sm font-bold opacity-80 uppercase tracking-tight">one-time</span>
+        </div>
+      </div>
+      <div class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">trending_up</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="text-center py-6">
+    <p class="font-body-lg text-body-lg text-on-background italic opacity-90">"Start small. Keep your safety cushion. Build confidence."</p>
+  </div>
+
+  <div class="mt-4 mb-8">
+    <button class="w-full bg-primary text-white font-bold text-lg py-4 rounded-lg shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] transition-all" onclick="location.href='index.html'">
+      Got it
+    </button>
+  </div>
+</main>
+
+<!-- Shared Bottom Nav -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-surface-container-high">
+  <div class="flex justify-around items-center w-full pt-2 pb-2 px-2 max-w-md mx-auto">
+    <a href="index.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">home</span>
+      <span class="text-[11px] font-medium mt-0.5">Home</span>
+    </a>
+    <button onclick="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
+      <span class="text-[11px] font-medium mt-0.5">Accounts</span>
+    </button>
+    <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+      <span class="text-[11px] mt-0.5">Invest</span>
+    </a>
+    <button onclick="alert('Insights coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">lightbulb</span>
+      <span class="text-[11px] font-medium mt-0.5">Insights</span>
+    </button>
+    <button onclick="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">person</span>
+      <span class="text-[11px] font-medium mt-0.5">Profile</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  window.addEventListener('load', () => {
+    const bar = document.querySelector('.progress-bar-fill');
+    setTimeout(() => { bar.style.width = '90%'; }, 300);
+  });
+</script>
+</body>
+</html>

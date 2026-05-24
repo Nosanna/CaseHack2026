@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Scotia InvestSense™ - Build Your Roadmap</title>
+
+<!-- Tailwind (JIT via CDN) -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<!-- Alpine.js (reactive UI framework) -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-background": "#1a1c1c",
+          "surface-tint": "#EC111A",
+          "surface-container-lowest": "#ffffff",
+          "background": "#f9f9f9",
+          "primary": "#EC111A",
+          "on-primary": "#ffffff",
+          "surface-container": "#eeeeee",
+          "secondary": "#5c5c5c",
+          "surface-container-high": "#e8e8e8",
+          "surface": "#ffffff",
+          "surface-bright": "#ffffff",
+          "outline-variant": "#e2e2e2",
+          "outline": "#d1d1d1",
+          "primary-container": "#EC111A",
+          "primary-fixed": "#ffeaea",
+          "surface-container-low": "#f9f9f9",
+          "surface-container-highest": "#f4f4f4",
+          "surface-variant": "#f4f4f4",
+          "on-surface": "#1a1c1c",
+          "on-surface-variant": "#5c5c5c"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+        spacing: {
+          "container-padding-mobile": "20px",
+          "container-padding-desktop": "40px",
+          "section-gap": "64px",
+          "base": "8px",
+          "gutter": "24px"
+        },
+        fontFamily: {
+          "display-lg": ["Manrope"], "body-lg": ["Manrope"], "headline-md": ["Manrope"],
+          "body-md": ["Manrope"], "headline-lg-mobile": ["Manrope"], "headline-lg": ["Manrope"],
+          "label-md": ["Manrope"], "label-sm": ["Manrope"]
+        },
+        fontSize: {
+          "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+          "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+          "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+          "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+          "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+        }
+      }
+    },
+    /* Tailwind JIT safelist for dynamic classes Alpine binds */
+    safelist: [
+      'border-[#EC111A]', 'border-transparent', 'border-[#d1d1d1]',
+      'bg-[#ffeaea]', 'bg-[#f4f4f4]', 'bg-white',
+      'text-[#EC111A]', 'text-primary', 'text-secondary', 'text-on-background',
+      'shadow-sm'
+    ]
+  }
+</script>
+
+<style>
+  body { font-family: 'Manrope', sans-serif; min-height: max(884px, 100dvh); }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
+
+  /* Card hover */
+  .apple-health-card { transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1), border-color 0.2s ease; }
+  .apple-health-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+  .apple-health-card:active { transform: scale(0.99); }
+
+  button, a, .nav-item { transition: all 0.2s ease; }
+
+  .quiz-btn { transition: all 0.2s ease; }
+  .quiz-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+  .quiz-btn:active { transform: scale(0.98); }
+
+  .chip-btn { transition: all 0.2s ease; }
+  .chip-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+
+  /* Custom slider thumb */
+  .risk-slider {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .risk-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px; height: 40px;
+    background: #EC111A;
+    border: 6px solid #ffffff;
+    border-radius: 9999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    cursor: grab;
+    transition: transform 0.1s ease;
+  }
+  .risk-slider:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.08); }
+  .risk-slider::-moz-range-thumb {
+    width: 40px; height: 40px;
+    background: #EC111A;
+    border: 6px solid #ffffff;
+    border-radius: 9999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    cursor: grab;
+  }
+
+  /* Pulse a green dot when a question is answered */
+  @keyframes pop { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+  .answered-pop { animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+  /* Fade-in for sections to feel "alive" */
+  .fade-in { animation: fadeIn 0.4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Tooltip */
+  .tooltip-popover { animation: fadeIn 0.2s ease both; }
+
+  [x-cloak] { display: none !important; }
+</style>
+</head>
+
+<body class="bg-[#f4f4f4] text-on-background font-body-md min-h-screen pb-32"
+      x-data="quizApp()" x-cloak>
+
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-50 flex justify-between items-center px-container-padding-mobile py-4 bg-surface text-on-surface">
+  <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" @click="goHome()">
+    <div class="w-8 h-8 flex items-center justify-center">
+      <svg class="w-full h-full text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm1.2 5h-2.4v10h2.4V7zM8.5 9h2v6h-2V9zm5 0h2v6h-2V9z"></path></svg>
+    </div>
+    <h1 class="text-lg font-bold text-primary">Scotia InvestSense™</h1>
+  </div>
+  <button class="hover:opacity-80 active:scale-95 p-2 rounded-full hover:bg-primary/10" @click="showHelp()">
+    <span class="material-symbols-outlined text-2xl text-primary">help</span>
+  </button>
+</header>
+
+<main class="max-w-3xl mx-auto px-container-padding-mobile md:px-container-padding-desktop mt-6">
+
+  <!-- Progress -->
+  <div class="mb-8">
+    <div class="flex justify-between items-center mb-2">
+      <span class="font-label-md text-label-md text-secondary">Step 1 of 5</span>
+      <span class="font-label-md text-label-md text-secondary" x-text="`${answeredCount} of 4 answered`"></span>
+    </div>
+    <div class="w-full h-1.5 bg-white rounded-full overflow-hidden">
+      <div class="h-full bg-primary transition-all duration-500" :style="`width: ${progressPct}%`"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <section class="mb-10">
+    <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-3">Build your investing roadmap</h2>
+    <p class="font-body-md text-secondary">Answer a few questions so Scotia can match your money to your goals.</p>
+  </section>
+
+  <!-- Q1: GOAL -->
+  <section class="mb-10">
+    <div class="flex items-center gap-2 mb-4">
+      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">1. WHAT ARE YOU INVESTING FOR?</h3>
+      <span x-show="goal" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-1 gap-3">
+      <template x-for="opt in goalOptions" :key="opt.id">
+        <div class="apple-health-card p-5 rounded-lg bg-white shadow-sm flex items-center gap-4 cursor-pointer border"
+             :class="goal === opt.id ? 'border-[#EC111A]' : 'border-transparent hover:border-[#d1d1d1]'"
+             @click="selectGoal(opt.id)">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
+               :class="goal === opt.id ? 'bg-[#ffeaea] text-[#EC111A]' : 'bg-[#f4f4f4] text-secondary'">
+            <span class="material-symbols-outlined" x-text="opt.icon"></span>
+          </div>
+          <div class="flex-1"><p class="font-bold text-on-background" x-text="opt.label"></p></div>
+          <div class="ml-auto" x-show="goal === opt.id" x-transition.scale.opacity>
+            <span class="material-symbols-outlined text-[#EC111A]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- Q2: TIMELINE -->
+  <section class="mb-10">
+    <div class="flex items-center gap-2 mb-4">
+      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">2. WHEN MIGHT YOU NEED THIS MONEY?</h3>
+      <span x-show="timeline" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+      </span>
+    </div>
+    <div class="grid grid-cols-2 gap-3 w-full">
+      <template x-for="opt in timelineOptions" :key="opt.id">
+        <button class="quiz-btn px-4 py-6 rounded-lg font-bold border flex flex-col items-center justify-center text-center leading-tight"
+                :class="timeline === opt.id
+                  ? 'bg-[#ffeaea] border-[#EC111A] text-primary shadow-sm'
+                  : 'bg-white border-[#d1d1d1] text-on-background hover:bg-gray-50'"
+                @click="selectTimeline(opt.id)">
+          <span x-html="opt.label"></span>
+        </button>
+      </template>
+    </div>
+  </section>
+
+  <!-- Q3: RISK -->
+  <section class="mb-10">
+    <div class="flex items-center gap-2 mb-4">
+      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">3. HOW DO MARKET UPS AND DOWNS MAKE YOU FEEL?</h3>
+      <span class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="risk">
+        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+      </span>
+    </div>
+    <div class="bg-white rounded-lg p-6 border border-white shadow-sm">
+      <div class="flex justify-between items-center mb-6">
+        <span class="text-xs font-semibold text-secondary">Conservative</span>
+        <span class="text-xs font-semibold text-secondary">Aggressive</span>
+      </div>
+      <div class="relative h-12 flex items-center px-2 bg-gray-50/50 rounded-xl">
+        <div class="absolute left-2 right-2 h-2.5 bg-[#e2e2e2] rounded-full overflow-hidden">
+          <div class="h-full bg-[#EC111A] transition-[width] duration-100" :style="`width: ${risk}%`"></div>
+        </div>
+        <input class="risk-slider absolute left-0 right-0 w-full h-12 bg-transparent cursor-pointer"
+               max="100" min="0" step="1" type="range"
+               x-model.number="risk">
+      </div>
+      <div class="text-center mt-8">
+        <span class="text-lg font-bold" :class="riskColorClass" x-text="riskLabel"></span>
+        <p class="text-xs text-secondary mt-1" x-text="riskDescription"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q4: PRIORITIES -->
+  <section class="mb-12">
+    <div class="flex items-center gap-2 mb-4">
+      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">4. WHAT MATTERS MOST TO YOU?</h3>
+      <span x-show="priorities.length > 0" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="priorities.length">
+        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+      </span>
+      <span class="text-[11px] text-secondary ml-auto" x-text="priorities.length ? `${priorities.length} selected` : 'Select any that apply'"></span>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <template x-for="opt in priorityOptions" :key="opt.id">
+        <button class="chip-btn flex items-center gap-2 px-4 py-2 rounded-lg bg-white border font-label-md"
+                :class="priorities.includes(opt.id)
+                  ? 'border-[#EC111A] text-on-background'
+                  : 'border-[#d1d1d1] text-secondary hover:border-[#EC111A]'"
+                @click="togglePriority(opt.id)">
+          <span class="material-symbols-outlined text-[18px]"
+                :class="priorities.includes(opt.id) ? 'text-[#EC111A]' : 'text-secondary'"
+                x-text="opt.icon"></span>
+          <span x-text="opt.label"></span>
+        </button>
+      </template>
+    </div>
+  </section>
+
+  <!-- Live Recommendation Preview -->
+  <section class="mb-10 fade-in" x-show="canSubmit" x-transition>
+    <div class="bg-white border border-[#EC111A]/20 rounded-xl p-5 shadow-sm">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#ffeaea] flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[#EC111A]">auto_awesome</span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-1">Live recommendation</p>
+          <p class="text-[15px] text-on-background leading-snug">
+            Based on your answers we'll match you to a
+            <span class="font-bold text-[#EC111A]" x-text="recommendedAccount"></span>
+            account with
+            <span class="font-bold text-[#EC111A]">$<span x-text="recommendedAmount"></span>/month</span>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Primary CTA -->
+  <div class="mt-16 text-center">
+    <button class="w-full md:w-auto md:min-w-[320px] py-4 px-8 rounded-lg font-bold text-lg shadow-sm transition-all"
+            :class="canSubmit
+              ? 'bg-[#EC111A] text-white hover:shadow-lg hover:brightness-110 active:scale-[0.98]'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+            :disabled="!canSubmit"
+            @click="submit()">
+      Generate My Roadmap
+    </button>
+    <p class="mt-4 text-xs text-secondary" x-text="canSubmit ? 'You can adjust these preferences at any time.' : 'Please answer questions 1 and 2 to continue.'"></p>
+  </div>
+</main>
+
+<!-- Help Tooltip Popover -->
+<div x-show="helpOpen" x-transition.opacity
+     class="fixed inset-0 bg-black/40 z-[60] flex items-end md:items-center justify-center p-4"
+     @click="helpOpen = false">
+  <div class="tooltip-popover bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" @click.stop>
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-bold text-lg">How this quiz works</h3>
+      <button @click="helpOpen = false" class="p-1 rounded-full hover:bg-gray-100">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <ul class="space-y-3 text-sm text-secondary">
+      <li class="flex gap-2"><span class="text-[#EC111A] font-bold">1.</span> Your goal helps us choose between FHSA, TFSA, RRSP or non-registered accounts.</li>
+      <li class="flex gap-2"><span class="text-[#EC111A] font-bold">2.</span> Your timeline determines how much risk is appropriate.</li>
+      <li class="flex gap-2"><span class="text-[#EC111A] font-bold">3.</span> Your risk comfort shapes the stock vs. bond mix.</li>
+      <li class="flex gap-2"><span class="text-[#EC111A] font-bold">4.</span> Your priorities filter which ETFs we suggest.</li>
+    </ul>
+    <button class="mt-5 w-full bg-[#EC111A] text-white font-bold py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all" @click="helpOpen = false">
+      Got it
+    </button>
+  </div>
+</div>
+
+<!-- Shared Bottom Nav -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-[#e2e2e2]">
+  <div class="flex justify-around items-center w-full pt-2 pb-2 px-2 max-w-md mx-auto">
+    <a href="index.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">home</span>
+      <span class="text-[11px] font-medium mt-0.5">Home</span>
+    </a>
+    <button @click="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
+      <span class="text-[11px] font-medium mt-0.5">Accounts</span>
+    </button>
+    <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+      <span class="text-[11px] mt-0.5">Invest</span>
+    </a>
+    <button @click="alert('Insights coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">lightbulb</span>
+      <span class="text-[11px] font-medium mt-0.5">Insights</span>
+    </button>
+    <button @click="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined text-[26px]">person</span>
+      <span class="text-[11px] font-medium mt-0.5">Profile</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  function quizApp() {
+    return {
+      /* ---------- state ---------- */
+      goal: 'home',
+      timeline: '3-5',
+      risk: 50,
+      priorities: ['low_fees', 'simple_portfolio', 'us_exposure'],
+      helpOpen: false,
+
+      /* ---------- option catalogs ---------- */
+      goalOptions: [
+        { id: 'home',       icon: 'home',         label: 'Buying my first home' },
+        { id: 'grow',       icon: 'trending_up',  label: 'Growing my money' },
+        { id: 'security',   icon: 'shield',       label: 'Long-term security' },
+        { id: 'travel',     icon: 'flight',       label: 'Future purchase or travel' },
+        { id: 'retirement', icon: 'elderly',      label: 'Retirement' }
+      ],
+      timelineOptions: [
+        { id: '<1', label: 'Less than 1<br>year' },
+        { id: '1-3', label: '1–3 years' },
+        { id: '3-5', label: '3–5 years' },
+        { id: '5+', label: '5+ years' }
+      ],
+      priorityOptions: [
+        { id: 'low_fees',          icon: 'payments',        label: 'Low fees' },
+        { id: 'simple_portfolio',  icon: 'account_tree',    label: 'Simple portfolio' },
+        { id: 'us_exposure',       icon: 'public',          label: 'U.S. market exposure' },
+        { id: 'ethical',           icon: 'eco',             label: 'Ethical investing' },
+        { id: 'dividends',         icon: 'show_chart',      label: 'High dividend yield' },
+        { id: 'emerging',          icon: 'rocket_launch',   label: 'Emerging tech' }
+      ],
+
+      /* ---------- lifecycle ---------- */
+      init() {
+        const saved = localStorage.getItem('investSenseQuiz');
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+            if (data.goal !== undefined) this.goal = data.goal;
+            if (data.timeline !== undefined) this.timeline = data.timeline;
+            if (typeof data.risk === 'number') this.risk = data.risk;
+            if (Array.isArray(data.priorities)) this.priorities = data.priorities;
+          } catch (e) { /* ignore */ }
+        }
+      },
+
+      /* ---------- selection handlers ---------- */
+      selectGoal(id)     { this.goal = (this.goal === id) ? '' : id; },
+      selectTimeline(id) { this.timeline = (this.timeline === id) ? '' : id; },
+      togglePriority(id) {
+        this.priorities = this.priorities.includes(id)
+          ? this.priorities.filter(p => p !== id)
+          : [...this.priorities, id];
+      },
+
+      /* ---------- computed: risk ---------- */
+      get riskLabel() {
+        const r = this.risk;
+        if (r <= 15) return 'Very conservative';
+        if (r <= 39) return 'Conservative';
+        if (r <= 60) return 'Medium risk';
+        if (r <= 85) return 'Growth-focused';
+        return 'Aggressive';
+      },
+      get riskDescription() {
+        const r = this.risk;
+        if (r <= 15) return 'Steady value, very few surprises.';
+        if (r <= 39) return 'Mostly bonds with some stocks for growth.';
+        if (r <= 60) return 'Balanced mix of stocks and bonds.';
+        if (r <= 85) return 'Mostly stocks; expect ups and downs.';
+        return 'Heavy equities; high reward, high volatility.';
+      },
+      get riskColorClass() {
+        const r = this.risk;
+        if (r <= 15) return 'text-blue-700';
+        if (r <= 39) return 'text-cyan-700';
+        if (r <= 60) return 'text-[#EC111A]';
+        if (r <= 85) return 'text-orange-600';
+        return 'text-rose-800';
+      },
+
+      /* ---------- computed: progress + recommendation ---------- */
+      get answeredCount() {
+        let n = 0;
+        if (this.goal) n++;
+        if (this.timeline) n++;
+        if (typeof this.risk === 'number') n++;
+        if (this.priorities.length > 0) n++;
+        return n;
+      },
+      get progressPct() { return Math.max(5, (this.answeredCount / 4) * 100); },
+      get canSubmit() { return !!this.goal && !!this.timeline; },
+
+      get recommendedAccount() {
+        if (this.goal === 'home')       return 'FHSA';
+        if (this.goal === 'retirement') return 'RRSP';
+        if (this.timeline === '<1')     return 'High-Interest Savings';
+        return 'TFSA';
+      },
+      get recommendedAmount() {
+        let base = 134;
+        if (this.timeline === '<1') base = 60;
+        if (this.timeline === '1-3') base = 95;
+        if (this.timeline === '5+') base = 175;
+        if (this.risk > 70) base += 25;
+        if (this.risk < 30) base -= 20;
+        return Math.max(40, base);
+      },
+
+      /* ---------- actions ---------- */
+      showHelp() { this.helpOpen = true; },
+      goHome()   { window.location.href = 'index.html'; },
+      submit() {
+        if (!this.canSubmit) {
+          alert('Please answer questions 1 and 2 to continue.');
+          return;
+        }
+        const payload = {
+          goal: this.goal,
+          goalLabel: this.goalOptions.find(o => o.id === this.goal)?.label,
+          timeline: this.timeline,
+          timelineLabel: this.timelineOptions.find(o => o.id === this.timeline)?.label.replace('<br>', ' '),
+          risk: this.risk,
+          riskLabel: this.riskLabel,
+          priorities: this.priorities,
+          recommendedAccount: this.recommendedAccount,
+          recommendedAmount: this.recommendedAmount,
+          completedAt: new Date().toISOString()
+        };
+        localStorage.setItem('investSenseQuiz', JSON.stringify(payload));
+        window.location.href = 'roadmap.html';
+      }
+    };
+  }
+</script>
+</body>
+</html>

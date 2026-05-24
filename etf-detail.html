@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ETF Detail - Scotia InvestSense™</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-background": "#1a1c1c",
+          "surface-tint": "#ec111a",
+          "surface-container-lowest": "#ffffff",
+          "background": "#f9f9f9",
+          "primary": "#ec111a",
+          "on-primary": "#ffffff",
+          "surface-container": "#eeeeee",
+          "inverse-surface": "#2f3131",
+          "inverse-on-surface": "#f1f1f1",
+          "secondary": "#5f5e5e",
+          "surface-container-high": "#e8e8e8",
+          "surface": "#f9f9f9",
+          "surface-container-low": "#f3f3f3",
+          "surface-container-highest": "#e2e2e2",
+          "on-surface": "#1a1c1c",
+          "tertiary": "#5c5c5c",
+          "primary-container": "#ec111a"
+        },
+        borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+        spacing: {
+          "container-padding-mobile": "20px", "container-padding-desktop": "40px",
+          "section-gap": "64px", "base": "8px", "gutter": "24px"
+        },
+        fontFamily: {
+          "display-lg": ["Manrope"], "body-lg": ["Manrope"], "headline-md": ["Manrope"],
+          "body-md": ["Manrope"], "headline-lg-mobile": ["Manrope"], "headline-lg": ["Manrope"],
+          "label-md": ["Manrope"], "label-sm": ["Manrope"]
+        },
+        fontSize: {
+          "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+          "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+          "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+          "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+          "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+          "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .hold-active { animation: pulse-ring 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1); }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236,17,26,0.4); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236,17,26,0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236,17,26,0); }
+  }
+  .tooltip-enter { animation: slideUp 0.3s ease-out forwards; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .scotia-card-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .metric-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+  .metric-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); border-color: rgba(236,17,26,0.3); }
+  .holding-card { transition: background-color 0.2s ease, transform 0.15s ease; }
+  .holding-card:hover { background-color: #e8e8e8; transform: translateY(-1px); }
+  button, a { transition: all 0.2s ease; }
+</style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-40">
+
+<header class="w-full top-0 sticky bg-surface z-40 transition-shadow duration-300" id="top-bar">
+  <div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-4 w-full border-b border-surface-container">
+    <div class="flex items-center gap-4">
+      <button class="hover:opacity-80 active:scale-95 p-2 -ml-2 rounded-full hover:bg-primary/10" onclick="location.href='etfs.html'">
+        <span class="material-symbols-outlined text-primary">arrow_back</span>
+      </button>
+      <h1 class="font-headline-md text-[20px] font-bold text-primary">VFV Detail</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="text-secondary hover:opacity-80 active:scale-95 p-2 rounded-full hover:bg-gray-100" onclick="alert('Need help understanding this ETF? Tap any info icon for details.')">
+        <span class="material-symbols-outlined">help</span>
+      </button>
+      <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-surface-container">
+        <img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-6_sUEFE0DW6ziv6i8s0_IsFhAVpO8tE8iG3SQjoFOjSLGBwmcHZsGacx8gArsD1HOtlxdFuRmTU-ZjCvil3O4vIPUOyniM1QK5dzmQlzPoVYChI__hN5RZctEVgoVOgpfekAwp5_vSCrsvpHGJA-YrFA9gtNRyilAR1YzEKOzL7aNJSOlwDTftHY2gxMd6wjI8jbMJxjAq-DwuLuomZa_SIXkeh4W9Ch9rdLXB7OCBAzY0brKWCBmEgWjHahz9djnfAaSYRMRe7-">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop mt-gutter space-y-gutter">
+
+  <div class="space-y-1">
+    <h2 class="font-headline-md text-headline-md font-bold text-on-surface">Vanguard S&amp;P 500 Index ETF</h2>
+    <p class="text-label-md text-secondary">NYSE Arca: VFV</p>
+  </div>
+
+  <section class="bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow border border-surface-container-low hover:shadow-md transition-shadow">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-2">
+        <h3 class="font-label-md text-on-surface uppercase tracking-wide">Overview</h3>
+        <p class="font-body-md text-body-md text-secondary max-w-2xl leading-relaxed">
+          Broad exposure to major U.S. companies, low fee, medium-high risk tolerance.
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <span class="px-3 py-1 bg-surface-container rounded-full text-label-sm text-secondary">Equity</span>
+        <span class="px-3 py-1 bg-surface-container rounded-full text-label-sm text-secondary">U.S. Large Cap</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+
+    <div class="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-gutter">
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow flex flex-col justify-between border border-surface-container-low cursor-pointer" data-metric="risk">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">Risk level</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <div class="mt-4">
+          <div class="flex gap-1 mb-2">
+            <div class="h-2 flex-1 bg-primary rounded-full"></div>
+            <div class="h-2 flex-1 bg-primary rounded-full"></div>
+            <div class="h-2 flex-1 bg-primary rounded-full"></div>
+            <div class="h-2 flex-1 bg-surface-container rounded-full"></div>
+            <div class="h-2 flex-1 bg-surface-container rounded-full"></div>
+          </div>
+          <p class="font-headline-md text-[20px] text-on-surface font-bold">Medium-High</p>
+        </div>
+      </div>
+
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low cursor-pointer" data-metric="mer">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">MER</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">0.09%</p>
+        <p class="text-label-sm text-tertiary">Industry low fee</p>
+      </div>
+
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low cursor-pointer" data-metric="yield">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">Div. Yield</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">1.2%</p>
+        <p class="text-label-sm text-tertiary">Paid quarterly</p>
+      </div>
+
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low cursor-pointer" data-metric="return">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">1-Year Return</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <p class="mt-4 font-headline-md text-[24px] text-primary font-bold">+18.4%</p>
+        <div class="flex items-center gap-1 text-primary">
+          <span class="material-symbols-outlined text-[16px]">trending_up</span>
+          <span class="text-label-sm">Above avg.</span>
+        </div>
+      </div>
+
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low cursor-pointer" data-metric="pe">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">P/E Ratio</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">28.4</p>
+        <p class="text-label-sm text-tertiary">Tap to explain</p>
+      </div>
+
+      <div class="metric-card bg-surface-container-lowest p-5 rounded-lg scotia-card-shadow border border-surface-container-low cursor-pointer" data-metric="assets">
+        <div class="flex justify-between items-start">
+          <span class="text-label-sm text-secondary uppercase tracking-wider">Assets</span>
+          <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+        </div>
+        <p class="mt-4 font-headline-md text-[24px] text-on-surface font-bold">$12.4B</p>
+        <p class="text-label-sm text-tertiary">Net assets (CAD)</p>
+      </div>
+    </div>
+
+    <div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow flex flex-col border border-surface-container-low hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-label-md font-bold text-on-surface uppercase tracking-wide">Growth of $10k</h3>
+        <select class="bg-transparent border-none text-label-sm text-primary font-bold focus:ring-0 cursor-pointer hover:opacity-80">
+          <option>5 Years</option>
+          <option>1 Year</option>
+          <option>Max</option>
+        </select>
+      </div>
+      <div class="flex-grow flex items-end gap-1.5 h-48">
+        <div class="bg-primary/20 w-full h-[20%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[25%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[40%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[35%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[55%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[70%] rounded-t-sm"></div>
+        <div class="bg-primary/20 w-full h-[65%] rounded-t-sm"></div>
+        <div class="bg-primary w-full h-[90%] rounded-t-sm"></div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-surface-container flex justify-between">
+        <span class="text-label-sm text-tertiary">2019</span>
+        <span class="text-label-sm text-on-surface font-bold">$18,420</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="bg-surface-container-lowest p-6 rounded-lg scotia-card-shadow border border-surface-container-low">
+    <h3 class="font-headline-md text-[20px] font-bold mb-6">Top Holdings</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="holding-card flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container">
+        <div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+          <span class="material-symbols-outlined text-secondary">devices</span>
+        </div>
+        <div><p class="font-label-md font-bold">Apple Inc.</p><p class="text-label-sm text-tertiary">7.1% Weight</p></div>
+      </div>
+      <div class="holding-card flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container">
+        <div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+          <span class="material-symbols-outlined text-secondary">computer</span>
+        </div>
+        <div><p class="font-label-md font-bold">Microsoft Corp.</p><p class="text-label-sm text-tertiary">6.9% Weight</p></div>
+      </div>
+      <div class="holding-card flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container">
+        <div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+          <span class="material-symbols-outlined text-secondary">memory</span>
+        </div>
+        <div><p class="font-label-md font-bold">NVIDIA Corp.</p><p class="text-label-sm text-tertiary">5.2% Weight</p></div>
+      </div>
+      <div class="holding-card flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-surface-container">
+        <div class="w-10 h-10 rounded bg-white flex items-center justify-center border border-surface-container">
+          <span class="material-symbols-outlined text-secondary">shopping_cart</span>
+        </div>
+        <div><p class="font-label-md font-bold">Amazon.com Inc.</p><p class="text-label-sm text-tertiary">3.8% Weight</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Fixed Action Area Above Nav -->
+<div class="fixed bottom-[72px] left-0 w-full bg-white/95 backdrop-blur-sm border-t border-surface-container p-4 z-40">
+  <div class="max-w-7xl mx-auto flex gap-3 items-center justify-between">
+    <div class="hidden md:block">
+      <p class="text-label-sm text-tertiary uppercase tracking-wider">Price per share</p>
+      <p class="font-headline-md text-[24px] font-bold text-on-surface">$124.52 <span class="text-body-md text-secondary font-normal ml-1">CAD</span></p>
+    </div>
+    <div class="flex w-full md:w-auto gap-3">
+      <button class="flex-1 md:px-8 py-3.5 border border-primary text-primary rounded-md font-label-md hover:bg-primary/5 active:scale-95 transition-all" onclick="alert('Added to comparison')">Compare</button>
+      <button class="flex-1 md:px-12 py-3.5 bg-primary text-white rounded-md font-label-md hover:brightness-110 hover:shadow-md active:scale-95 transition-all shadow-md" onclick="location.href='portfolio.html'">Add to My Plan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Metric Explanation Modal -->
+<div id="metric-modal" class="fixed inset-0 bg-black/40 z-[60] hidden items-end md:items-center justify-center p-4 transition-opacity">
+  <div id="metric-modal-card" class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl transform transition-all" onclick="event.stopPropagation()">
+    <div class="flex items-start justify-between mb-3">
+      <div>
+        <p class="text-[11px] font-bold text-secondary uppercase tracking-widest" id="metric-modal-title"></p>
+        <p class="text-[28px] font-bold text-primary leading-tight mt-0.5" id="metric-modal-value"></p>
+      </div>
+      <button onclick="hideMetric()" class="p-1 rounded-full hover:bg-gray-100 active:scale-95 transition-all">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <p id="metric-modal-body" class="text-sm text-secondary leading-relaxed"></p>
+    <button class="mt-5 w-full bg-primary text-white font-bold py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all" onclick="hideMetric()">
+      Got it
+    </button>
+  </div>
+</div>
+
+<!-- Shared Bottom Nav -->
+<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-surface-container">
+  <div class="flex justify-around items-center w-full pt-2 pb-2 px-2 max-w-md mx-auto">
+    <a href="index.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined">home</span>
+      <span class="text-[11px] font-medium mt-0.5">Home</span>
+    </a>
+    <button onclick="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined">account_balance_wallet</span>
+      <span class="text-[11px] font-medium mt-0.5">Accounts</span>
+    </button>
+    <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+      <span class="text-[11px] mt-0.5">Invest</span>
+    </a>
+    <button onclick="alert('Insights coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined">lightbulb</span>
+      <span class="text-[11px] font-medium mt-0.5">Insights</span>
+    </button>
+    <button onclick="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+      <span class="material-symbols-outlined">person</span>
+      <span class="text-[11px] font-medium mt-0.5">Profile</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  /* ---------- Per-metric plain-English explanations ---------- */
+  const METRIC_EXPLANATIONS = {
+    risk: {
+      title: 'Risk Level',
+      value: 'Medium-High',
+      body: "How much this fund's value tends to swing up and down. Medium-High means notable short-term volatility in exchange for stronger long-term growth potential — best suited to investors with a 5+ year horizon who won't panic-sell in a downturn."
+    },
+    mer: {
+      title: 'MER (Management Expense Ratio)',
+      value: '0.09%',
+      body: "The annual fee deducted from your investment, shown as a percentage. At 0.09%, you pay $0.90 per year for every $1,000 invested — among the lowest in the industry. Lower MERs leave more of the returns in your pocket."
+    },
+    yield: {
+      title: 'Dividend Yield',
+      value: '1.2%',
+      body: "The yearly cash payouts from the fund's underlying holdings, expressed as a percentage of its price. A 1.2% yield pays roughly $12 per year on a $1,000 investment, distributed quarterly. You can take it as cash or reinvest it."
+    },
+    return: {
+      title: '1-Year Return',
+      value: '+18.4%',
+      body: "Total growth over the last 12 months, including both price changes and dividends paid. A $1,000 investment a year ago would now be worth about $1,184. Past performance does not guarantee future results."
+    },
+    pe: {
+      title: 'P/E Ratio (Price-to-Earnings)',
+      value: '28.4',
+      body: "How much investors are paying for every $1 of yearly earnings from the companies in this fund. A P/E of 28.4 means $28.40 per $1 of earnings — higher numbers usually reflect strong growth expectations, but can also signal that prices are stretched."
+    },
+    assets: {
+      title: 'Net Assets',
+      value: '$12.4B',
+      body: "The total amount of money invested across all holders of this fund. Larger funds tend to trade more easily (better liquidity), have tighter buy/sell spreads, and lower the risk of the fund being shut down."
+    }
+  };
+
+  const modal = document.getElementById('metric-modal');
+  const titleEl = document.getElementById('metric-modal-title');
+  const valueEl = document.getElementById('metric-modal-value');
+  const bodyEl  = document.getElementById('metric-modal-body');
+
+  function showMetric(id) {
+    const m = METRIC_EXPLANATIONS[id];
+    if (!m) return;
+    titleEl.textContent = m.title;
+    valueEl.textContent = m.value;
+    bodyEl.textContent  = m.body;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function hideMetric() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  document.querySelectorAll('[data-metric]').forEach(card => {
+    card.addEventListener('click', () => showMetric(card.dataset.metric));
+  });
+
+  modal.addEventListener('click', e => { if (e.target === modal) hideMetric(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hideMetric(); });
+
+  /* Top-bar shadow on scroll */
+  window.addEventListener('scroll', () => {
+    const header = document.getElementById('top-bar');
+    if (window.scrollY > 10) header.classList.add('shadow-sm');
+    else header.classList.remove('shadow-sm');
+  });
+</script>
+</body>
+</html>
