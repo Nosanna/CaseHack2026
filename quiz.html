@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Scotia InvestSense™ - Build Your Roadmap</title>
+<title>ScotiaInvested+ - Build Your Roadmap</title>
 
 <!-- Tailwind (JIT via CDN) -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -142,9 +142,9 @@
 <header class="w-full top-0 sticky z-50 flex justify-between items-center px-container-padding-mobile py-4 bg-surface text-on-surface">
   <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" @click="goHome()">
     <div class="w-8 h-8 flex items-center justify-center">
-      <svg class="w-full h-full text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm1.2 5h-2.4v10h2.4V7zM8.5 9h2v6h-2V9zm5 0h2v6h-2V9z"></path></svg>
+      <img alt="Scotiabank logo" src="assets/scotia-logo.png" class="w-full h-full object-contain">
     </div>
-    <h1 class="text-lg font-bold text-primary">Scotia InvestSense™</h1>
+    <h1 class="text-lg font-bold text-primary">ScotiaInvested+</h1>
   </div>
   <button class="hover:opacity-80 active:scale-95 p-2 rounded-full hover:bg-primary/10" @click="showHelp()">
     <span class="material-symbols-outlined text-2xl text-primary">help</span>
@@ -388,7 +388,7 @@
 
       /* ---------- lifecycle ---------- */
       init() {
-        const saved = localStorage.getItem('investSenseQuiz');
+        const saved = localStorage.getItem('scotiaInvestedQuiz');
         if (saved) {
           try {
             const data = JSON.parse(saved);
@@ -483,7 +483,7 @@
           recommendedAmount: this.recommendedAmount,
           completedAt: new Date().toISOString()
         };
-        localStorage.setItem('investSenseQuiz', JSON.stringify(payload));
+        localStorage.setItem('scotiaInvestedQuiz', JSON.stringify(payload));
         window.location.href = 'roadmap.html';
       }
     };

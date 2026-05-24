@@ -49,11 +49,11 @@
   <!-- Top Header (iOS status bar removed) -->
   <header class="bg-scotiaRed text-white pt-6 pb-6 px-4">
     <div class="flex justify-between items-center">
-      <div class="flex items-center">
-        <svg class="w-8 h-8" fill="none" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0zm0 36c-8.837 0-16-7.163-16-16S11.163 4 20 4s16 7.163 16 16-7.163 16-16 16z" fill="white"></path>
-          <path d="M25 12h-10c-1.105 0-2 .895-2 2v12c0 1.105.895 2 2 2h10c1.105 0 2-.895 2-2V14c0-1.105-.895-2-2-2zm-1 12h-8v-2h8v2zm0-4h-8v-2h8v2zm0-4h-8v-2h8v2z" fill="white"></path>
-        </svg>
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 bg-white rounded-md flex items-center justify-center p-1 shadow-sm">
+          <img alt="Scotiabank logo" src="assets/scotia-logo.png" class="w-full h-full object-contain">
+        </div>
+        <span class="font-bold text-lg tracking-tight">Scotiabank</span>
       </div>
       <button class="w-7 h-7 border-2 border-white rounded-full flex items-center justify-center font-bold text-sm hover:bg-white/15" onclick="alert('Need help? Our customer support is available 24/7.')">?</button>
     </div>
@@ -95,19 +95,19 @@
       </div>
     </section>
 
-    <!-- InvestSense Insight Card -->
+    <!-- ScotiaInvested+ Insight Card -->
     <section class="bg-white rounded-scotia shadow-md border-l-4 border-scotiaRed p-5 hover:shadow-lg transition-shadow">
       <div class="flex items-center gap-2 mb-3">
         <div class="bg-scotiaRed/10 p-1.5 rounded-full">
           <svg class="w-4 h-4 text-scotiaRed" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>
         </div>
-        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">InvestSense Insight</span>
+        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">ScotiaInvested+ Insight</span>
       </div>
       <h3 class="text-lg font-extrabold text-gray-900 leading-tight mb-2">
         You could be investing <span class="text-scotiaRed">$134/month</span>
       </h3>
       <p class="text-xs text-gray-600 leading-relaxed mb-5">
-        Based on your income, bills, savings, and spending habits, Scotia InvestSense found a safe starting amount that may not disrupt your lifestyle.
+        Based on your income, bills, savings, and spending habits, ScotiaInvested+ found a safe starting amount that may not disrupt your lifestyle.
       </p>
       <button class="w-full bg-scotiaRed text-white py-3 rounded-scotia font-bold text-sm shadow-sm hover:bg-red-700 hover:shadow-md active:scale-[0.98] transition-all" onclick="location.href='affordability.html'">
         Build My Investing Plan
