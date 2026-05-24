@@ -1,0 +1,176 @@
+/* iPhone Mockup Styles */
+:root {
+  --phone-width: 375px;
+  --phone-height: 812px;
+  --phone-radius: 50px;
+  --screen-radius: 35px;
+  --bezel: 12px;
+}
+
+body.with-mockup {
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+}
+
+.iphone-x {
+  position: relative;
+  width: var(--phone-width);
+  height: var(--phone-height);
+  padding: var(--bezel);
+  background: #111;
+  border-radius: var(--phone-radius);
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.25), 
+              0 30px 60px -30px rgba(0,0,0,0.3), 
+              inset 0 -2px 6px 0 rgba(255,255,255,0.1);
+  overflow: visible;
+  transition: transform 0.3s ease;
+}
+
+.iphone-x:hover {
+  transform: scale(1.02);
+}
+
+.iphone-x .side-button {
+  position: absolute;
+  background: #111;
+  border-radius: 2px;
+}
+
+.iphone-x .power-button {
+  width: 3px;
+  height: 80px;
+  top: 180px;
+  right: -3px;
+}
+
+.iphone-x .volume-buttons {
+  width: 3px;
+  height: 45px;
+  left: -3px;
+}
+
+.iphone-x .volume-up { top: 120px; }
+.iphone-x .volume-down { top: 180px; }
+.iphone-x .mute-switch { top: 70px; width: 3px; height: 25px; left: -3px; }
+
+.iphone-x .screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: var(--screen-radius);
+  overflow: hidden;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  padding-top: 28px; /* Notch height safe area */
+}
+
+.iphone-x .notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 28px;
+  background: #111;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 6px;
+}
+
+.iphone-x .notch::before {
+  content: '';
+  width: 40px;
+  height: 4px;
+  background: #222;
+  border-radius: 2px;
+}
+
+.iphone-x .home-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 5px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+  z-index: 1001;
+}
+
+/* Hide mockup on small screens (actual phones) */
+@media (max-width: 500px) {
+  body.with-mockup {
+    background: none;
+    display: block;
+  }
+  .iphone-x {
+    width: 100% !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .iphone-x .screen {
+    border-radius: 0 !important;
+    padding-top: 0 !important;
+  }
+  .iphone-x .notch, .iphone-x .side-button, .iphone-x .home-bar {
+    display: none;
+  }
+}
+
+/* Container Adjustments */
+.iphone-x .screen > div, 
+.iphone-x .screen > main {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fixed positioning fix for within mockup */
+.iphone-x .screen nav.fixed,
+.iphone-x .screen .fixed-bottom {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  bottom: 0 !important;
+  width: 100% !important;
+  z-index: 999;
+}
+
+.iphone-x .screen header.sticky,
+.iphone-x .screen .sticky-top {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  width: 100% !important;
+  z-index: 999;
+}
+
+/* Scrollbar styling for better look in mockup */
+.iphone-x .screen *::-webkit-scrollbar {
+  width: 4px;
+}
+.iphone-x .screen *::-webkit-scrollbar-track {
+  background: transparent;
+}
+.iphone-x .screen *::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 10px;
+}

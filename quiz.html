@@ -13,6 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/mockup.css" rel="stylesheet">
 
 <script>
   tailwind.config = {
@@ -135,174 +136,209 @@
 </style>
 </head>
 
-<body class="bg-[#f4f4f4] text-on-background font-body-md min-h-screen pb-32"
+<body class="bg-[#f4f4f4] text-on-background font-body-md min-h-screen with-mockup"
       x-data="quizApp()" x-cloak>
-
-<!-- Top App Bar -->
-<header class="w-full top-0 sticky z-50 flex justify-between items-center px-container-padding-mobile py-4 bg-surface text-on-surface">
-  <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" @click="goHome()">
-    <div class="w-8 h-8 flex items-center justify-center">
-      <img alt="Scotiabank logo" src="assets/scotia-logo.png" class="w-full h-full object-contain">
-    </div>
-    <h1 class="text-lg font-bold text-primary">ScotiaInvested+</h1>
-  </div>
-  <button class="hover:opacity-80 active:scale-95 p-2 rounded-full hover:bg-primary/10" @click="showHelp()">
-    <span class="material-symbols-outlined text-2xl text-primary">help</span>
-  </button>
-</header>
-
-<main class="max-w-3xl mx-auto px-container-padding-mobile md:px-container-padding-desktop mt-6">
-
-  <!-- Progress -->
-  <div class="mb-8">
-    <div class="flex justify-between items-center mb-2">
-      <span class="font-label-md text-label-md text-secondary">Step 1 of 5</span>
-      <span class="font-label-md text-label-md text-secondary" x-text="`${answeredCount} of 4 answered`"></span>
-    </div>
-    <div class="w-full h-1.5 bg-white rounded-full overflow-hidden">
-      <div class="h-full bg-primary transition-all duration-500" :style="`width: ${progressPct}%`"></div>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <section class="mb-10">
-    <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-3">Build your investing roadmap</h2>
-    <p class="font-body-md text-secondary">Answer a few questions so Scotia can match your money to your goals.</p>
-  </section>
-
-  <!-- Q1: GOAL -->
-  <section class="mb-10">
-    <div class="flex items-center gap-2 mb-4">
-      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">1. WHAT ARE YOU INVESTING FOR?</h3>
-      <span x-show="goal" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
-        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
-      </span>
-    </div>
-    <div class="grid grid-cols-1 gap-3">
-      <template x-for="opt in goalOptions" :key="opt.id">
-        <div class="apple-health-card p-5 rounded-lg bg-white shadow-sm flex items-center gap-4 cursor-pointer border"
-             :class="goal === opt.id ? 'border-[#EC111A]' : 'border-transparent hover:border-[#d1d1d1]'"
-             @click="selectGoal(opt.id)">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-               :class="goal === opt.id ? 'bg-[#ffeaea] text-[#EC111A]' : 'bg-[#f4f4f4] text-secondary'">
-            <span class="material-symbols-outlined" x-text="opt.icon"></span>
+<div class="iphone-x">
+  <div class="side-button power-button"></div>
+  <div class="side-button volume-buttons volume-up"></div>
+  <div class="side-button volume-buttons volume-down"></div>
+  <div class="side-button mute-switch"></div>
+  <div class="notch"></div>
+  <div class="screen overflow-hidden flex flex-col">
+    <!-- Top App Bar -->
+    <header class="w-full top-0 sticky z-50 flex justify-between items-center px-container-padding-mobile py-4 bg-surface text-on-surface">
+      <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" @click="goHome()">
+        <div class="w-8 h-8 flex items-center justify-center">
+          <img alt="Scotiabank logo" src="assets/scotia-logo.png" class="w-full h-full object-contain">
+        </div>
+        <h1 class="text-lg font-bold text-primary">ScotiaInvested+</h1>
+      </div>
+      <button class="hover:opacity-80 active:scale-95 p-2 rounded-full hover:bg-primary/10" @click="showHelp()">
+        <span class="material-symbols-outlined text-2xl text-primary">help</span>
+      </button>
+    </header>
+    
+    <main class="flex-grow px-container-padding-mobile md:px-container-padding-desktop mt-6 overflow-y-auto pb-32">
+    
+      <!-- Progress -->
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-2">
+          <span class="font-label-md text-label-md text-secondary">Step 1 of 5</span>
+          <span class="font-label-md text-label-md text-secondary" x-text="`${answeredCount} of 4 answered`"></span>
+        </div>
+        <div class="w-full h-1.5 bg-white rounded-full overflow-hidden">
+          <div class="h-full bg-primary transition-all duration-500" :style="`width: ${progressPct}%`"></div>
+        </div>
+      </div>
+    
+      <!-- Header -->
+      <section class="mb-10">
+        <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-3">Build your investing roadmap</h2>
+        <p class="font-body-md text-secondary">Answer a few questions so Scotia can match your money to your goals.</p>
+      </section>
+    
+      <!-- Q1: GOAL -->
+      <section class="mb-10">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">1. WHAT ARE YOU INVESTING FOR?</h3>
+          <span x-show="goal" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+            <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+          </span>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          <template x-for="opt in goalOptions" :key="opt.id">
+            <div class="apple-health-card p-5 rounded-lg bg-white shadow-sm flex items-center gap-4 cursor-pointer border"
+                 :class="goal === opt.id ? 'border-[#EC111A]' : 'border-transparent hover:border-[#d1d1d1]'"
+                 @click="selectGoal(opt.id)">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
+                   :class="goal === opt.id ? 'bg-[#ffeaea] text-[#EC111A]' : 'bg-[#f4f4f4] text-secondary'">
+                <span class="material-symbols-outlined" x-text="opt.icon"></span>
+              </div>
+              <div class="flex-1"><p class="font-bold text-on-background" x-text="opt.label"></p></div>
+              <div class="ml-auto" x-show="goal === opt.id" x-transition.scale.opacity>
+                <span class="material-symbols-outlined text-[#EC111A]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    
+      <!-- Q2: TIMELINE -->
+      <section class="mb-10">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">2. WHEN MIGHT YOU NEED THIS MONEY?</h3>
+          <span x-show="timeline" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+            <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 w-full">
+          <template x-for="opt in timelineOptions" :key="opt.id">
+            <button class="quiz-btn px-4 py-6 rounded-lg font-bold border flex flex-col items-center justify-center text-center leading-tight"
+                    :class="timeline === opt.id
+                      ? 'bg-[#ffeaea] border-[#EC111A] text-primary shadow-sm'
+                      : 'bg-white border-[#d1d1d1] text-on-background hover:bg-gray-50'"
+                    @click="selectTimeline(opt.id)">
+              <span x-html="opt.label"></span>
+            </button>
+          </template>
+        </div>
+      </section>
+    
+      <!-- Q3: RISK -->
+      <section class="mb-10">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">3. HOW DO MARKET UPS AND DOWNS MAKE YOU FEEL?</h3>
+          <span class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="risk">
+            <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+          </span>
+        </div>
+        <div class="bg-white rounded-lg p-6 border border-white shadow-sm">
+          <div class="flex justify-between items-center mb-6">
+            <span class="text-xs font-semibold text-secondary">Conservative</span>
+            <span class="text-xs font-semibold text-secondary">Aggressive</span>
           </div>
-          <div class="flex-1"><p class="font-bold text-on-background" x-text="opt.label"></p></div>
-          <div class="ml-auto" x-show="goal === opt.id" x-transition.scale.opacity>
-            <span class="material-symbols-outlined text-[#EC111A]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <div class="relative h-12 flex items-center px-2 bg-gray-50/50 rounded-xl">
+            <div class="absolute left-2 right-2 h-2.5 bg-[#e2e2e2] rounded-full overflow-hidden">
+              <div class="h-full bg-[#EC111A] transition-[width] duration-100" :style="`width: ${risk}%`"></div>
+            </div>
+            <input class="risk-slider absolute left-0 right-0 w-full h-12 bg-transparent cursor-pointer"
+                   max="100" min="0" step="1" type="range"
+                   x-model.number="risk">
+          </div>
+          <div class="text-center mt-8">
+            <span class="text-lg font-bold" :class="riskColorClass" x-text="riskLabel"></span>
+            <p class="text-xs text-secondary mt-1" x-text="riskDescription"></p>
           </div>
         </div>
-      </template>
-    </div>
-  </section>
-
-  <!-- Q2: TIMELINE -->
-  <section class="mb-10">
-    <div class="flex items-center gap-2 mb-4">
-      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">2. WHEN MIGHT YOU NEED THIS MONEY?</h3>
-      <span x-show="timeline" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
-        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
-      </span>
-    </div>
-    <div class="grid grid-cols-2 gap-3 w-full">
-      <template x-for="opt in timelineOptions" :key="opt.id">
-        <button class="quiz-btn px-4 py-6 rounded-lg font-bold border flex flex-col items-center justify-center text-center leading-tight"
-                :class="timeline === opt.id
-                  ? 'bg-[#ffeaea] border-[#EC111A] text-primary shadow-sm'
-                  : 'bg-white border-[#d1d1d1] text-on-background hover:bg-gray-50'"
-                @click="selectTimeline(opt.id)">
-          <span x-html="opt.label"></span>
+      </section>
+    
+      <!-- Q4: PRIORITIES -->
+      <section class="mb-12">
+        <div class="flex items-center gap-2 mb-4">
+          <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">4. WHAT MATTERS MOST TO YOU?</h3>
+          <span x-show="priorities.length > 0" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="priorities.length">
+            <span class="material-symbols-outlined" style="font-size:14px;">check</span>
+          </span>
+          <span class="text-[11px] text-secondary ml-auto" x-text="priorities.length ? `${priorities.length} selected` : 'Select any that apply'"></span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="opt in priorityOptions" :key="opt.id">
+            <button class="chip-btn flex items-center gap-2 px-4 py-2 rounded-lg bg-white border font-label-md"
+                    :class="priorities.includes(opt.id)
+                      ? 'border-[#EC111A] text-on-background'
+                      : 'border-[#d1d1d1] text-secondary hover:border-[#EC111A]'"
+                    @click="togglePriority(opt.id)">
+              <span class="material-symbols-outlined text-[18px]"
+                    :class="priorities.includes(opt.id) ? 'text-[#EC111A]' : 'text-secondary'"
+                    x-text="opt.icon"></span>
+              <span x-text="opt.label"></span>
+            </button>
+          </template>
+        </div>
+      </section>
+    
+      <!-- Live Recommendation Preview -->
+      <section class="mb-10 fade-in" x-show="canSubmit" x-transition>
+        <div class="bg-white border border-[#EC111A]/20 rounded-xl p-5 shadow-sm">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-lg bg-[#ffeaea] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[#EC111A]">auto_awesome</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-1">Live recommendation</p>
+              <p class="text-[15px] text-on-background leading-snug">
+                Based on your answers we'll match you to a
+                <span class="font-bold text-[#EC111A]" x-text="recommendedAccount"></span>
+                account with
+                <span class="font-bold text-[#EC111A]">$<span x-text="recommendedAmount"></span>/month</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Primary CTA -->
+      <div class="mt-16 text-center">
+        <button class="w-full md:w-auto md:min-w-[320px] py-4 px-8 rounded-lg font-bold text-lg shadow-sm transition-all"
+                :class="canSubmit
+                  ? 'bg-[#EC111A] text-white hover:shadow-lg hover:brightness-110 active:scale-[0.98]'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+                :disabled="!canSubmit"
+                @click="submit()">
+          Generate My Roadmap
         </button>
-      </template>
-    </div>
-  </section>
-
-  <!-- Q3: RISK -->
-  <section class="mb-10">
-    <div class="flex items-center gap-2 mb-4">
-      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">3. HOW DO MARKET UPS AND DOWNS MAKE YOU FEEL?</h3>
-      <span class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="risk">
-        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
-      </span>
-    </div>
-    <div class="bg-white rounded-lg p-6 border border-white shadow-sm">
-      <div class="flex justify-between items-center mb-6">
-        <span class="text-xs font-semibold text-secondary">Conservative</span>
-        <span class="text-xs font-semibold text-secondary">Aggressive</span>
+        <p class="mt-4 text-xs text-secondary" x-text="canSubmit ? 'You can adjust these preferences at any time.' : 'Please answer questions 1 and 2 to continue.'"></p>
       </div>
-      <div class="relative h-12 flex items-center px-2 bg-gray-50/50 rounded-xl">
-        <div class="absolute left-2 right-2 h-2.5 bg-[#e2e2e2] rounded-full overflow-hidden">
-          <div class="h-full bg-[#EC111A] transition-[width] duration-100" :style="`width: ${risk}%`"></div>
-        </div>
-        <input class="risk-slider absolute left-0 right-0 w-full h-12 bg-transparent cursor-pointer"
-               max="100" min="0" step="1" type="range"
-               x-model.number="risk">
-      </div>
-      <div class="text-center mt-8">
-        <span class="text-lg font-bold" :class="riskColorClass" x-text="riskLabel"></span>
-        <p class="text-xs text-secondary mt-1" x-text="riskDescription"></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Q4: PRIORITIES -->
-  <section class="mb-12">
-    <div class="flex items-center gap-2 mb-4">
-      <h3 class="font-label-md text-label-md text-secondary uppercase tracking-wider font-bold">4. WHAT MATTERS MOST TO YOU?</h3>
-      <span x-show="priorities.length > 0" class="answered-pop inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white" :key="priorities.length">
-        <span class="material-symbols-outlined" style="font-size:14px;">check</span>
-      </span>
-      <span class="text-[11px] text-secondary ml-auto" x-text="priorities.length ? `${priorities.length} selected` : 'Select any that apply'"></span>
-    </div>
-    <div class="flex flex-wrap gap-2">
-      <template x-for="opt in priorityOptions" :key="opt.id">
-        <button class="chip-btn flex items-center gap-2 px-4 py-2 rounded-lg bg-white border font-label-md"
-                :class="priorities.includes(opt.id)
-                  ? 'border-[#EC111A] text-on-background'
-                  : 'border-[#d1d1d1] text-secondary hover:border-[#EC111A]'"
-                @click="togglePriority(opt.id)">
-          <span class="material-symbols-outlined text-[18px]"
-                :class="priorities.includes(opt.id) ? 'text-[#EC111A]' : 'text-secondary'"
-                x-text="opt.icon"></span>
-          <span x-text="opt.label"></span>
+    </main>
+    
+    <!-- Shared Bottom Nav -->
+    <nav class="fixed bottom-0 w-full z-50 bg-white border-t border-[#e2e2e2]">
+      <div class="flex justify-around items-center w-full pt-2 pb-2 px-2 max-w-md mx-auto">
+        <a href="index.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+          <span class="material-symbols-outlined text-[26px]">home</span>
+          <span class="text-[11px] font-medium mt-0.5">Home</span>
+        </a>
+        <button @click="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+          <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
+          <span class="text-[11px] font-medium mt-0.5">Accounts</span>
         </button>
-      </template>
-    </div>
-  </section>
-
-  <!-- Live Recommendation Preview -->
-  <section class="mb-10 fade-in" x-show="canSubmit" x-transition>
-    <div class="bg-white border border-[#EC111A]/20 rounded-xl p-5 shadow-sm">
-      <div class="flex items-start gap-3">
-        <div class="w-9 h-9 rounded-lg bg-[#ffeaea] flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-[#EC111A]">auto_awesome</span>
-        </div>
-        <div class="flex-1">
-          <p class="text-[11px] font-bold text-secondary uppercase tracking-wider mb-1">Live recommendation</p>
-          <p class="text-[15px] text-on-background leading-snug">
-            Based on your answers we'll match you to a
-            <span class="font-bold text-[#EC111A]" x-text="recommendedAccount"></span>
-            account with
-            <span class="font-bold text-[#EC111A]">$<span x-text="recommendedAmount"></span>/month</span>.
-          </p>
-        </div>
+        <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+          <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+          <span class="text-[11px] mt-0.5">Invest</span>
+        </a>
+        <button @click="alert('Insights coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+          <span class="material-symbols-outlined text-[26px]">lightbulb</span>
+          <span class="text-[11px] font-medium mt-0.5">Insights</span>
+        </button>
+        <button @click="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
+          <span class="material-symbols-outlined text-[26px]">person</span>
+          <span class="text-[11px] font-medium mt-0.5">Profile</span>
+        </button>
       </div>
-    </div>
-  </section>
-
-  <!-- Primary CTA -->
-  <div class="mt-16 text-center">
-    <button class="w-full md:w-auto md:min-w-[320px] py-4 px-8 rounded-lg font-bold text-lg shadow-sm transition-all"
-            :class="canSubmit
-              ? 'bg-[#EC111A] text-white hover:shadow-lg hover:brightness-110 active:scale-[0.98]'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
-            :disabled="!canSubmit"
-            @click="submit()">
-      Generate My Roadmap
-    </button>
-    <p class="mt-4 text-xs text-secondary" x-text="canSubmit ? 'You can adjust these preferences at any time.' : 'Please answer questions 1 and 2 to continue.'"></p>
+    </nav>
   </div>
-</main>
+  <div class="home-bar"></div>
+</div>
 
 <!-- Help Tooltip Popover -->
 <div x-show="helpOpen" x-transition.opacity
@@ -326,32 +362,6 @@
     </button>
   </div>
 </div>
-
-<!-- Shared Bottom Nav -->
-<nav class="fixed bottom-0 w-full z-50 bg-white border-t border-[#e2e2e2]">
-  <div class="flex justify-around items-center w-full pt-2 pb-2 px-2 max-w-md mx-auto">
-    <a href="index.html" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
-      <span class="material-symbols-outlined text-[26px]">home</span>
-      <span class="text-[11px] font-medium mt-0.5">Home</span>
-    </a>
-    <button @click="alert('Accounts coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
-      <span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
-      <span class="text-[11px] font-medium mt-0.5">Accounts</span>
-    </button>
-    <a href="portfolio.html" class="flex flex-col items-center justify-center text-primary font-bold hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
-      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
-      <span class="text-[11px] mt-0.5">Invest</span>
-    </a>
-    <button @click="alert('Insights coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
-      <span class="material-symbols-outlined text-[26px]">lightbulb</span>
-      <span class="text-[11px] font-medium mt-0.5">Insights</span>
-    </button>
-    <button @click="alert('Profile coming soon')" class="flex flex-col items-center justify-center text-secondary hover:bg-gray-100 transition-all p-2 rounded-xl active:scale-90 hover:-translate-y-0.5">
-      <span class="material-symbols-outlined text-[26px]">person</span>
-      <span class="text-[11px] font-medium mt-0.5">Profile</span>
-    </button>
-  </div>
-</nav>
 
 <script>
   function quizApp() {
